@@ -3,7 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="icon" href="data:," />
     <title>Project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -11,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <style>
       :root {
-        color-scheme: light dark;
+        color-scheme: light;
         --bg: #ffffff;
         --bg-2: #f4f4f4;
         --surface: #ffffff;
@@ -32,35 +33,13 @@
         --shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 10px 28px -18px rgba(0, 0, 0, .22);
         --radius: 14px;
       }
-      @media (prefers-color-scheme: dark) {
-        :root {
-          --bg: #000000;
-          --bg-2: #1a1a1a;
-          --surface: #111111;
-          --surface-2: #1a1a1a;
-          --ink: #ffffff;
-          --ink-2: #d4d4d4;
-          --ink-3: #9a9a9a;
-          --line: #2e2e2e;
-          --brand: #ffffff;
-          --brand-2: #ffffff;
-          --brand-soft: #262626;
-          --gold: #ffffff;
-          --gold-soft: #262626;
-          --red: #ffffff;
-          --red-soft: #262626;
-          --blue: #ffffff;
-          --blue-soft: #262626;
-          --shadow: 0 1px 2px rgba(0,0,0,.6), 0 12px 30px -18px rgba(0,0,0,.9);
-        }
-      }
       * { box-sizing: border-box; }
-      html { scroll-behavior: smooth; }
+      html { scroll-behavior: smooth; background: #ffffff; color-scheme: light; }
       body {
         margin: 0;
         font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-        background: var(--bg);
-        color: var(--ink);
+        background: #ffffff;
+        color: #000000;
         -webkit-font-smoothing: antialiased;
       }
       h1, h2, h3, .lexend { font-family: "Lexend", "Inter", system-ui, sans-serif; }
@@ -71,31 +50,28 @@
 
       /* ---------- Hero ---------- */
       .hero {
-        background: #000000;
-        color: #ffffff;
+        background: #ffffff;
+        color: #000000;
         padding: 40px 0 34px;
-        border-bottom: 1px solid #000000;
-      }
-      @media (prefers-color-scheme: dark) {
-        .hero { background: #000000; border-bottom-color: #2e2e2e; }
+        border-bottom: 1px solid var(--line);
       }
       .hero-top { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-end; justify-content: space-between; }
       .hero h1 { font-size: clamp(26px, 4.4vw, 40px); line-height: 1.12; margin: 0 0 8px; font-weight: 800; letter-spacing: -.01em; }
-      .hero p.lede { margin: 0; max-width: 620px; color: #d4d4d4; font-size: 15px; line-height: 1.55; }
+      .hero p.lede { margin: 0; max-width: 620px; color: var(--ink-2); font-size: 15px; line-height: 1.55; }
       .hero .sheet-link {
         display: inline-flex; align-items: center; gap: 8px;
-        background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.28);
-        color: #fff; text-decoration: none; font-size: 13px; font-weight: 600;
+        background: #ffffff; border: 1px solid #000000;
+        color: #000000; text-decoration: none; font-size: 13px; font-weight: 600;
         padding: 9px 14px; border-radius: 999px; white-space: nowrap;
       }
-      .hero .sheet-link:hover { background: rgba(255,255,255,.2); }
+      .hero .sheet-link:hover { background: #eeeeee; }
       .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 28px; }
       .stat {
-        background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14);
+        background: var(--surface-2); border: 1px solid var(--line);
         border-radius: var(--radius); padding: 14px 16px;
       }
       .stat b { display: block; font-family: "Lexend", sans-serif; font-size: 26px; font-weight: 700; line-height: 1; }
-      .stat span { display: block; margin-top: 6px; font-size: 12px; color: #d4d4d4; letter-spacing: .02em; }
+      .stat span { display: block; margin-top: 6px; font-size: 12px; color: var(--ink-3); letter-spacing: .02em; }
       @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
 
       /* ---------- Controls ---------- */
@@ -140,7 +116,6 @@
       .chip:hover { border-color: var(--brand-2); color: var(--ink); }
       .chip.active { background: #000000; border-color: #000000; color: #ffffff; }
       .chip.active .n { background: rgba(255,255,255,.22); color: #ffffff; }
-      @media (prefers-color-scheme: dark) { .chip.active { background: #ffffff; border-color: #ffffff; color: #000000; } .chip.active .n { background: rgba(0,0,0,.14); color: #000000; } }
       .result-line { margin-top: 10px; font-size: 13px; color: var(--ink-3); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
       .result-line button { border: 0; background: none; color: var(--brand-2); font-weight: 600; font-size: 13px; cursor: pointer; padding: 0; display: none; }
       .result-line button:hover { text-decoration: underline; }
@@ -176,14 +151,6 @@
       .pill.live { background: #ffffff; color: #000000; }
       .pill.dead { background: #e3e3e3; color: #555555; text-decoration: line-through; }
       .pill.unconfirmed { background: #f4f4f4; color: #333333; border-style: dashed; border-color: #999999; }
-      @media (prefers-color-scheme: dark) {
-        .pill.verified { background: #ffffff; border-color: #ffffff; color: #000000; }
-        .pill.responds { background: #000000; color: #ffffff; border-color: #ffffff; }
-        .pill.staging { background: #262626; color: #ffffff; }
-        .pill.live { background: #111111; color: #ffffff; }
-        .pill.dead { background: #262626; color: #9a9a9a; }
-        .pill.unconfirmed { background: #1a1a1a; color: #d4d4d4; border-color: #6b6b6b; }
-      }
       .links { display: flex; flex-direction: column; gap: 6px; margin-top: auto; }
       .site-link {
         display: flex; align-items: center; gap: 8px;
@@ -229,9 +196,7 @@
       .tags { display: flex; flex-wrap: wrap; gap: 6px; }
       .tag { font-size: 11px; font-weight: 600; line-height: 1; padding: 5px 8px; border-radius: 999px; background: var(--bg-2); color: var(--ink-2); border: 1px solid var(--line); }
       .tag.match { background: #000000; color: #ffffff; border-color: #000000; }
-      @media (prefers-color-scheme: dark) { .tag.match { background: #ffffff; color: #000000; border-color: #ffffff; } }
       mark { background: #000000; color: #ffffff; border-radius: 3px; padding: 0 1px; }
-      @media (prefers-color-scheme: dark) { mark { background: #ffffff; color: #000000; } }
     </style>
   </head>
   <body>
@@ -281,7 +246,6 @@
             </select>
           </div>
         </div>
-        <p class="search-hint" id="searchHint">Client er <b>namer ek ongsho</b>, <b>domain er ongsho</b> ba <b>niche / bisoy</b> likhlei hobe — mile gele niche dekhabe. Jemon: <b>calderon</b> → bj_calderon, <b>peptide</b> → shob peptide client, <b>skin</b> → skincare client, <b>bj calderon</b> (space diye) o cholbe, underscore lage na.</p>
         <div class="chips" id="chips" role="tablist" aria-label="Platform categories"></div>
         <div class="result-line">
           <span id="resultCount"></span>
@@ -298,13 +262,7 @@
       </div>
     </div>
 
-    <footer>
-      <div class="wrap">
-        <p><b>Data snapshot:</b> 5 November 2026 — <a href="https://docs.google.com/spreadsheets/d/17rNK6ce-1BuWd2XmSJK-tTELH2zPMTTs1SmkjUknl7Q/edit" target="_blank" rel="noopener">Telegram Project Groups — A to Z</a> Google Sheet theke neya. Sheet update hole ei page-o rebuild kore update korte hobe.</p>
-        <p><b>Status mane:</b> <b>Verified live</b> = load kore check kora live site &nbsp;·&nbsp; <b>Live link</b> = client domain, alada load-check note nei &nbsp;·&nbsp; <b>Domain responds</b> = domain response kore kintu full site load hoy ni &nbsp;·&nbsp; <b>Staging / Dev / Temp</b> = softvence / wpengine / staging type link, live site na &nbsp;·&nbsp; <b>Live na (load fail)</b> = sheet-e link ache kintu load check-e site live pawa jay ni &nbsp;·&nbsp; <b>Context unclear</b> = site live, kintu oi group er project kina confirm na.</p>
-        <p>Shob 75 ta group-i panel-checked — Telegram group panel khule members ar link verify kora.</p>
-      </div>
-    </footer>
+
 
     <script>
       // Data baked in from the "Telegram Project Groups - A to Z" Google Sheet, snapshot 2026-11-05.
