@@ -116,6 +116,12 @@
       .chip:hover { border-color: var(--brand-2); color: var(--ink); }
       .chip.active { background: #000000; border-color: #000000; color: #ffffff; }
       .chip.active .n { background: rgba(255,255,255,.22); color: #ffffff; }
+      .chip.muted { color: var(--ink-3); border-style: dashed; }
+      .chip.muted .n { color: var(--ink-3); }
+      .chip.muted:hover { color: var(--ink-2); border-color: var(--ink-3); }
+      .chip.muted.active { background: #000000; border-color: #000000; border-style: solid; color: #ffffff; }
+      .chip.muted.active .n { background: rgba(255,255,255,.22); color: #ffffff; }
+      section.cat.dim .cat-head h2 { color: var(--ink-3); }
       .result-line { margin-top: 10px; font-size: 13px; color: var(--ink-3); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
       .result-line button { border: 0; background: none; color: var(--brand-2); font-weight: 600; font-size: 13px; cursor: pointer; padding: 0; display: none; }
       .result-line button:hover { text-decoration: underline; }
@@ -246,7 +252,7 @@
             </select>
           </div>
         </div>
-        <div class="chips" id="chips" role="tablist" aria-label="Platform categories"></div>
+        <div class="chips" id="chips" role="tablist" aria-label="Project categories"></div>
         <div class="result-line">
           <span id="resultCount"></span>
           <button id="resetBtn">Reset shob filter</button>
@@ -268,89 +274,122 @@
 
     <script>
       // Data baked in from the "Telegram Project Groups - A to Z" Google Sheet, snapshot 2026-11-05.
-      // platform: wp (shob project-i WordPress)   status: verified | live | responds | staging
+      // Link status fresh-checked 2026-11-05: live 44 project (45 link), staging 9, dead 17, domain-responds 5.
+      // p: prottek project er FIXED category id (CATS / CAT_LABEL)   s: verified | live | responds | staging | dead
       var PROJECTS = [
-        { n: "bj_calderon", t: "bj_calderon || techforge1 || WordPress || FO729A866F1C5", u: [["peptides.us", "https://peptides.us/"]], a: "2026-11-05 08:45, Emon Hossain", d: "2026-11-05", p: "wp", s: "live" },
-        { n: "collab_cre8ive", t: "collab_cre8ive // skytwine // #Shopify", u: [["ukmerchandising.co.uk", "https://ukmerchandising.co.uk/"]], a: "2026-11-05 08:09, Farhad Hossain", d: "2026-11-05", p: "wp", s: "live" },
-        { n: "consimworld", t: "consimworld || explorweb_Fiverr || WP || FO522B69AAA05", u: [["consimgame1dev.wpenginepowered.com", "https://consimgame1dev.wpenginepowered.com/"]], a: "2026-11-04 08:16, Sanoara Popi", d: "2026-11-04", p: "wp", s: "staging" },
-        { n: "ekund1", t: "ekund1 / haidayammar", u: [["herhairbang.com", "https://herhairbang.com/"]], a: "2026-11-04 17:06, Webgenius", d: "2026-11-04", p: "wp", s: "live" },
-        { n: "gypseaco", t: "gypseaco || shopify_manir_Fiverr || $100", u: [["gypsea.co", "https://gypsea.co"]], a: "2026-11-05 08:21, Oliullah Al Ahad", d: "2026-11-05", p: "wp", s: "live" },
-        { n: "heatherzawahry", t: "heatherzawahry || tech_forge1 || WordPress || FO6A6E4CD2", u: [["amalpc.org", "https://amalpc.org"]], a: "2026-11-05 09:39, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "verified" },
-        { n: "helenafeofanov", t: "helenafeofanov || WP_Monkey || Shopify_Manir", u: [["hypnos.ee", "https://hypnos.ee"]], a: "2026-11-04 18:32, Shopify Manir", d: "2026-11-04", p: "wp", s: "live" },
-        { n: "jayhawk93", t: "jayhawk93 || shopify_manir || $100", u: [["jayhawk93.softvenceomega.com", "https://jayhawk93.softvenceomega.com/"]], a: "2026-11-04 17:35, Shopify Manir (only sent)", d: "2026-11-04", p: "wp", s: "staging" },
-        { n: "jdub888", t: "jdub888 || FO838424DEB08 || Manir_ Fiverr || Wordpress", u: [["yasuivapes.com", "https://yasuivapes.com/"]], a: "2026-11-05 08:46, Shopify Manir", d: "2026-11-05", p: "wp", s: "live" },
-        { n: "mattdivita", t: "mattdivita || Shopify_Manir || FO62F4E65EAC8 || WordPress", u: [["mattdlvita123.softvenceprime.com", "https://mattdlvita123.softvenceprime.com"]], a: "2026-11-05 08:46, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "staging" },
-        { n: "mikeprince83", t: "mikeprince83 || WP || Shopify_Manir", u: [["evergreeneliterentals.com", "https://evergreeneliterentals.com/"]], a: "2026-11-04 09:34, Shopify Manir", d: "2026-11-04", p: "wp", s: "live" },
-        { n: "pauldowling896", t: "pauldowling896 || tech_forge1 || WordPress || FO2DFC957742", u: [["premiumpeptides.asia", "https://premiumpeptides.asia"]], a: "2026-11-05 08:16, Shopify Manir", d: "2026-11-05", p: "wp", s: "live" },
-        { n: "paulkear01", t: "paulkear01 || tech_forge1 || WordPress || FO4E4DE8F9B3", u: [["vertexbio.co.uk", "https://vertexbio.co.uk"]], a: "2026-11-05 09:37, Shopify Manir", d: "2026-11-05", p: "wp", s: "verified" },
-        { n: "polenography", t: "polenography || FO8226BA01582 || shopify_manir_Fiverr || Wordpress", u: [["polenography.com/poleclasses", "https://polenography.com/poleclasses"]], a: "2026-11-05 09:34, Shakil Khan", d: "2026-11-05", p: "wp", s: "verified" },
-        { n: "primapeptider", t: "primapeptider — WP_Monkey — $50 || Shopify_Manir", u: [["1292930.eu9.myftpupload.com", "https://1292930.eu9.myftpupload.com/"]], a: "2026-11-04 15:59, Farhad Hossain", d: "2026-11-04", p: "wp", s: "staging" },
-        { n: "rosyhernandez4u", t: "rosyhernandez4u || tech_forge1 || FO429DC16E0C8 || Wordpress", u: [["vivewellnessla.com", "https://vivewellnessla.com"]], a: "2026-11-05 09:39, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "live" },
-        { n: "sergiogp4", t: "sergiogp4 — zyrocode — $300", u: [["staging2.nfnutrition.es", "https://staging2.nfnutrition.es/"]], a: "2026-11-04 17:18, Mercury Man (only sent)", d: "2026-11-04", p: "wp", s: "staging" },
-        { n: "shir_tan", t: "shir_tan || tech_forge1 || WordPress || FOE3A9F3D29", u: [["valoraictsolutions.com", "https://valoraictsolutions.com"]], a: "2026-11-05 09:38, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "verified" },
-        { n: "skylineinspired", t: "skylineinspired -- WP_Monkey_Fiverr — $650", u: [["skylineinspired.wpsilentpress.com", "https://skylineinspired.wpsilentpress.com/"]], a: "2026-11-04 12:18, Monkey Man (only sent)", d: "2026-11-04", p: "wp", s: "staging" },
-        { n: "tonypm1983", t: "tonypm1983 || tech_forge1 || WordPress || FOFFEE0B", u: [["spiffycleanco.com", "https://spiffycleanco.com"]], a: "2026-11-05 09:38, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "live" },
-        { n: "Webwise", t: "Webwise || Infini_tech", u: [["webwise.wpsvaomega.com", "https://webwise.wpsvaomega.com"]], a: "2026-11-04 16:23, Farhad Hossain", d: "2026-11-04", p: "wp", s: "staging" },
-        { n: "williamlowe751", t: "williamlowe751 — pixelcraft — $150 + $100", u: [["williamlowe751.wpsilentpress.com", "https://williamlowe751.wpsilentpress.com/"]], a: "2026-11-05 09:39, Aurora (only sent)", d: "2026-11-05", p: "wp", s: "staging" },
-        { n: "xraidersx", t: "xraidersx || tech_forge1 || WordPress || FO1AF0C", u: [["mrprobatesolutions.com", "https://mrprobatesolutions.com"]], a: "2026-08-28 project message; backup pinned 2026-11-05", d: "2026-08-28", p: "wp", s: "responds" },
-        { n: "Explorerjft", t: "Explorerjft || WP_Monkey || $150", u: [["geovortex.net", "https://geovortex.net"]], a: "2026-11-05 08:14, Monkey Man", d: "2026-11-05", p: "wp", s: "live" },
-        { n: "zac_leighton", t: "zac_leighton || tech_forge1 || WordPress || FO529E46874C7", u: [["elv8labs.com.au", "https://elv8labs.com.au"]], a: "2026-11-04 16:02, Sujon Banik", d: "2026-11-04", p: "wp", s: "live" },
-        { n: "zombiesmasher", t: "zombiesmasher || shopify_Manir || WordPress || FO1150B2F6D45", u: [["utmanimmigration.com", "https://utmanimmigration.com"]], a: "2026-11-03, Shopify Manir (only sent)", d: "2026-11-03", p: "wp", s: "live" },
-        { n: "n3tt33", t: "n3tt33 || Explorweb || #FO223313BD688 || Wordpress", u: [["starlightreikistudio.net", "https://starlightreikistudio.net"]], a: "2026-11-02, Sobuj Ali", d: "2026-11-02", p: "wp", s: "live" },
-        { n: "jimjim_86", t: "jimjim_86 || tech_forge1 || WordPress || FO522D0381105", u: [["pepvibesco.com", "https://pepvibesco.com/"]], a: "2026-11-01, Shopify Manir (only sent)", d: "2026-11-01", p: "wp", s: "verified" },
-        { n: "adam_bouzaid", t: "adam_bouzaid || twisbit || WordPress || FO61BE03C1D82", u: [["falconshocks.com.au", "https://falconshocks.com.au/"]], a: "2026-10-31, Abu Bakar", d: "2026-10-31", p: "wp", s: "live" },
-        { n: "jayzee855", t: "jayzee855 || FO31C20DE9385 || Shopify_Manir || WordPress", u: [["jayzee855.wpsvaomega.com", "https://jayzee855.wpsvaomega.com"]], a: "2026-10-28, Farhad Hossain", d: "2026-10-28", p: "wp", s: "staging" },
-        { n: "aaronsherril784", t: "aaronsherril784 || Shopify_Manir || FO527A342D1C7", u: [["movewellmobile.com", "https://movewellmobile.com/"]], a: "2026-10-25, Shopify Manir", d: "2026-10-25", p: "wp", s: "verified" },
-        { n: "lmnop8", t: "lmnop8 || Shopify_Manir || WordPress || FO214866CFBC4", u: [["blumeskintreatment.com", "https://blumeskintreatment.com/"], ["lumeraskinaz.com", "https://lumeraskinaz.com/"]], a: "2025-09-22, Shopify Manir (only sent)", d: "2025-09-22", p: "wp", s: "live" },
-        { n: "nithinchristy", t: "nithinchristy || tech_weave FO21A5D01DD86", u: [["thecrewlab.ae", "https://thecrewlab.ae/"]], a: "2025-09-10, Farhad Hossain", d: "2025-09-10", p: "wp", s: "live" },
-        { n: "adrian_nmg2002", t: "adrian_nmg2002 || manir || WORDPRESS", u: [["datarecoverydepartment.com", "https://datarecoverydepartment.com"]], a: "2025-09-25, Shopify Manir (only Sent)", d: "2025-09-25", p: "wp", s: "dead", note: "Load check: Error 525 — site live load hoy ni" },
-        { n: "skeyacht", t: "skeyacht (WP) || weaveflow || FO621A3781A84", u: [["skeyacht.com", "https://skeyacht.com/"]], a: "2025-06-15, Farhad Hossain", d: "2025-06-15", p: "wp", s: "live" },
-        { n: "abdelhadi_zabin", t: "abdelhadi_zabin || Shopify_Manir || FO1678AA328", u: [["raneenmep.com", "https://raneenmep.com"]], a: "2025-04-20, Shopify Manir (only sent)", d: "2025-04-20", p: "wp", s: "live" },
-        { n: "maxsaw35", t: "maxsaw35 || Shopify_Manir || FO621A8E69C84 || Wordpress", u: [["merlinfoghlu.com", "http://merlinfoghlu.com/"]], a: "2025-04-05, Shopify Manir (only sent)", d: "2025-04-05", p: "wp", s: "live" },
-        { n: "xiebig", t: "xiebig || Wordpress || Shopify manir || FO7218FBBF483", u: [["applytm.com", "https://www.applytm.com/"]], a: "2025-02-27, Shopify Manir (only sent)", d: "2025-02-27", p: "wp", s: "verified" },
-        { n: "glowaks", t: "glowaks || Shopify_Manir_Fiverr || FO72E21D2CCC7", u: [["pachocreate.com", "https://pachocreate.com/"]], a: "2025-02-26, Shopify Manir (only sent)", d: "2025-02-26", p: "wp", s: "verified" },
-        { n: "e_kadem", t: "e_kadem || Shopify_Manir_Fiverr || FO821364E1182", u: [["ekadem.softvenceomega.com", "https://ekadem.softvenceomega.com/"]], a: "2025-02-18, Farhad Hossain", d: "2025-02-18", p: "wp", s: "staging" },
-        { n: "ritanwa", t: "ritanwa || Shopify_Manir || FO35F2A1A1C1", u: [["ritachecksin.com", "https://ritachecksin.com"]], a: "2025-02-18, Sobuj Ali", d: "2025-02-18", p: "wp", s: "live" },
-        { n: "austinmowell10", t: "austinmowell10 || Shopify_Manir || WordPress || FO", u: [["aeriopartners.com", "https://aeriopartners.com/"]], a: "2025-02-18, Farhad Hossain", d: "2025-02-18", p: "wp", s: "unconfirmed", note: "aeriopartners.com live, kintu ei group-e pawa geleo context unclear — ei project er confirmed site na" },
-        { n: "legiondwise", t: "legiondwise || Shopify_Manir || FOA4A6C86F1C5 || WordPress", u: [["nighttidemultimedia.com", "https://nighttidemultimedia.com/"]], a: "2025-02-05, Shopify Manir (only sent)", d: "2025-02-05", p: "wp", s: "verified" },
-        { n: "graemesmithnas", t: "graemesmithnas || Shopify_Manir || FO41ADF7DAB", u: [["nascorporation.biz", "https://nascorporation.biz/"]], a: "2025-01-30, Vision Byte (only sent)", d: "2025-01-30", p: "wp", s: "live" },
-        { n: "matthewdarne864", t: "matthewdarne864 || Shopify_Manir || FO7BEA6BDA || WordPress", u: [["comtel.group", "https://comtel.group/"]], a: "2025-10-25, Farhad Hossain", d: "2025-10-25", p: "wp", s: "verified" },
-        { n: "hannah_walker42", t: "hannah_walker42 || Shopify_Manir || WordPress || FO", u: [["rescuehill.org", "https://rescuehill.org/"]], a: "2025-10-10, Farhad Hossain", d: "2025-10-10", p: "wp", s: "verified" },
-        { n: "siramar117", t: "siramar117 || Shopify_Manir || FO5E0DCAD7D || WordPress", u: [["simplygreenpest.com", "https://simplygreenpest.com/"]], a: "2025-09-18, Shopify Manir", d: "2025-09-18", p: "wp", s: "verified" },
-        { n: "romerojp", t: "romerojp || Shopify_Manir || FO9C46E", u: [["sycnmore.com", "https://sycnmore.com/"]], a: "2025-08-31, Shopify Manir", d: "2025-08-31", p: "wp", s: "verified" },
-        { n: "eugenio1974", t: "eugenio1974 || Shopify_Manir || WordPress || FO4C7E0A", u: [["sicilyinkayak.com/en", "https://www.sicilyinkayak.com/en/"]], a: "2025-08-25, AuraNest", d: "2025-08-25", p: "wp", s: "live" },
-        { n: "artrsmucenieks", t: "artrsmucenieks || Shopify_Manir || WordPress || FO", u: [["artrsmucenieks.softvenceomega.com", "https://artrsmucenieks.softvenceomega.com"]], a: "2025-07-29, Abdullah Bhai SVO (only sent)", d: "2025-07-29", p: "wp", s: "staging" },
-        { n: "veratornow587", t: "veratornow587 || Shopify_Manir || WordPress || FO", u: [["veratornow587.softvenceomega.com", "https://veratornow587.softvenceomega.com"]], a: "2025-07-27, Abdullah Bhai SVO", d: "2025-07-27", p: "wp", s: "staging" },
-        { n: "wesleysch_nl", t: "wesleysch_nl || Shopify_Manir || WordPress || FO6F7F3E63", u: [["wesleyschnl.softvenceomega.com", "https://wesleyschnl.softvenceomega.com/"]], a: "2025-07-26, Abdullah Bhai SVO (only sent)", d: "2025-07-26", p: "wp", s: "staging" },
-        { n: "grantmcmurtrie", t: "grantmcmurtrie || Shopify_Manir || WordPress || FO", u: [["professionalamateurclub.com", "https://professionalamateurclub.com"]], a: "2025-07-21, Farhad Hossain", d: "2025-07-21", p: "wp", s: "live" },
-        { n: "adam_luetto", t: "adam_luetto || Shopify_Manir || WordPress || FO5D36E9", u: [["adamluetto.softvenceomega.com", "https://adamluetto.softvenceomega.com"]], a: "2025-06-24, Farhad Hossain", d: "2025-06-24", p: "wp", s: "staging" },
-        { n: "elisha_k123", t: "elisha_k123 || Shopify_Manir || WordPress || FO", u: [["elisha.softvenceomega.com", "https://elisha.softvenceomega.com"]], a: "2025-06-19, Farhad Hossain", d: "2025-06-19", p: "wp", s: "staging" },
-        { n: "brooke_lea_smit", t: "brooke_lea_smit || tech_forge1 || WordPress || FO8AA0D", u: [["lucidvue.com", "https://lucidvue.com/"]], a: "2026-11-05 09:35, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "verified" },
-        { n: "jasonchicago", t: "jasonchicago || tech_forge1 || WordPress || FO28F1E9C2A", u: [["ionixpeptide.com", "https://ionixpeptide.com/"]], a: "2026-11-05 09:30, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "responds" },
-        { n: "tanyagw", t: "tanyagw || tech_forge1 || FO7DB9D7D9F", u: [["generationswellness.org", "https://generationswellness.org"]], a: "2026-11-05 09:27, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "live" },
-        { n: "murka23", t: "murka23 || Shopify_Manir || WordPress || FO", u: [["upandupremodeling.com", "https://upandupremodeling.com/"]], a: "2026-11-04 14:28, Ziaul Karim", d: "2026-11-04", p: "wp", s: "verified" },
-        { n: "marc1biz", t: "marc1biz || Shopify_Manir || WordPress || FO", u: [["cabinetexpo.com", "https://cabinetexpo.com/"]], a: "2026-11-04 15:35, Maruf Khan", d: "2026-11-04", p: "wp", s: "verified" },
-        { n: "tim_jr12", t: "tim_jr12 || Shopify_Manir || WordPress || FO", u: [["almapeptides.com", "https://almapeptides.com"]], a: "2026-11-04 10:10, Farhad Hossain", d: "2026-11-04", p: "wp", s: "live" },
-        { n: "dipz_330", t: "dipz_330 || Shopify_Manir || WordPress || FO", u: [["dipz330.softvenceprime.com", "https://dipz330.softvenceprime.com"]], a: "2026-11-04 12:57, Shohag Rana", d: "2026-11-04", p: "wp", s: "staging" },
-        { n: "aahud19", t: "aahud19 || Shopify_Manir || WordPress || FO", u: [["sdannex.org", "https://sdannex.org"]], a: "2026-11-04 15:20, Shohag Rana", d: "2026-11-04", p: "wp", s: "live" },
-        { n: "ebedj6922", t: "ebedj6922 || Shopify_Manir || WordPress || FO", u: [["pursuitofjoy.org", "https://pursuitofjoy.org/"]], a: "2026-11-04 15:03, Tofajjal Hossain", d: "2026-11-04", p: "wp", s: "verified" },
-        { n: "cgollins", t: "cgollins || Shopify_Manir || WordPress || FO", u: [["ptagrading.com", "https://ptagrading.com/"]], a: "2026-11-04 16:35, Tofajjal Hossain", d: "2026-11-04", p: "wp", s: "dead", note: "Load check: blank / lander page — live site na" },
-        { n: "tailiu604", t: "tailiu604 || Shopify_Manir || WordPress || FO", u: [["trdgarage.com", "https://trdgarage.com"]], a: "2026-07-31, Farhad Hossain", d: "2026-07-31", p: "wp", s: "live" },
-        { n: "marielalvara835", t: "marielalvara835 || Shopify_Manir || WordPress || FO", u: [["nibadesigns.com", "https://nibadesigns.com/"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "wp", s: "live" },
-        { n: "jordancbassett", t: "jordancbassett || Shopify_Manir || WordPress || FO", u: [["upliftpeptide.com", "https://upliftpeptide.com/"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "wp", s: "responds" },
-        { n: "omarc2657", t: "omarc2657 || Shopify_Manir || WordPress || FO", u: [["displaykingdom.com.au", "https://displaykingdom.com.au/"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "wp", s: "live" },
-        { n: "goldmount", t: "goldmount || Shopify_Manir || WordPress || FO", u: [["epilabpeptides.com", "https://epilabpeptides.com/"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "wp", s: "verified" },
-        { n: "ryanswimusa", t: "ryanswimusa || Shopify_Manir || WordPress || FO", u: [["hilligerinc.com", "https://hilligerinc.com"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "wp", s: "dead", note: "Load check: privacy / certificate error — live confirm hoy ni" },
-        { n: "redmanroo", t: "redmanroo || Shopify_Manir || WordPress || FO", u: [["aegispeptidex.com", "https://aegispeptidex.com"]], a: "2026-06-09, Sales (only sent)", d: "2026-06-09", p: "wp", s: "live" },
-        { n: "oh_hale", t: "oh_hale || Shopify_Manir || WordPress || FO", u: [["goldenpondretirement.com", "https://goldenpondretirement.com/"]], a: "2026-05-22, Emon Hossain", d: "2026-05-22", p: "wp", s: "verified" },
-        { n: "alexgverstacct", t: "alexgverstacct || Shopify_Manir || WordPress || FO", u: [["versatilegrowth.com.au", "https://versatilegrowth.com.au/"]], a: "2026-05-16, Farhad Hossain", d: "2026-05-16", p: "wp", s: "verified" },
-        { n: "beth_hinkson", t: "beth_hinkson || shopify_Manir || FO21522C272C4", u: [["beth.wpsvaomega.com", "https://beth.wpsvaomega.com/"]], a: "2026-11-05 08:34, Farhad Hossain", d: "2026-11-05", p: "wp", s: "staging" }
+        { n: "bj_calderon", t: "bj_calderon || techforge1 || WordPress || FO729A866F1C5", u: [["peptides.us", "https://peptides.us/"]], a: "2026-11-05 08:45, Emon Hossain", d: "2026-11-05", p: "peptide", s: "live" },
+        { n: "collab_cre8ive", t: "collab_cre8ive // skytwine // #Shopify", u: [["ukmerchandising.co.uk", "https://ukmerchandising.co.uk/"]], a: "2026-11-05 08:09, Farhad Hossain", d: "2026-11-05", p: "ecommerce", s: "live" },
+        { n: "consimworld", t: "consimworld || explorweb_Fiverr || WP || FO522B69AAA05", u: [["consimgame1dev.wpenginepowered.com", "https://consimgame1dev.wpenginepowered.com/"]], a: "2026-11-04 08:16, Sanoara Popi", d: "2026-11-04", p: "media", s: "staging" },
+        { n: "ekund1", t: "ekund1 / haidayammar", u: [["herhairbang.com", "https://herhairbang.com/"]], a: "2026-11-04 17:06, Webgenius", d: "2026-11-04", p: "skincare", s: "live" },
+        { n: "gypseaco", t: "gypseaco || shopify_manir_Fiverr || $100", u: [["gypsea.co", "https://gypsea.co"]], a: "2026-11-05 08:21, Oliullah Al Ahad", d: "2026-11-05", p: "unverified", s: "responds" },
+        { n: "heatherzawahry", t: "heatherzawahry || tech_forge1 || WordPress || FO6A6E4CD2", u: [["amalpc.org", "https://amalpc.org"]], a: "2026-11-05 09:39, Tofajjal Hossain", d: "2026-11-05", p: "nonprofit", s: "verified" },
+        { n: "helenafeofanov", t: "helenafeofanov || WP_Monkey || Shopify_Manir", u: [["hypnos.ee", "https://hypnos.ee"]], a: "2026-11-04 18:32, Shopify Manir", d: "2026-11-04", p: "unverified", s: "dead" },
+        { n: "jayhawk93", t: "jayhawk93 || shopify_manir || $100", u: [["jayhawk93.softvenceomega.com", "https://jayhawk93.softvenceomega.com/"]], a: "2026-11-04 17:35, Shopify Manir (only sent)", d: "2026-11-04", p: "nonprofit", s: "staging" },
+        { n: "jdub888", t: "jdub888 || FO838424DEB08 || Manir_ Fiverr || Wordpress", u: [["yasuivapes.com", "https://yasuivapes.com/"]], a: "2026-11-05 08:46, Shopify Manir", d: "2026-11-05", p: "vape", s: "live" },
+        { n: "mattdivita", t: "mattdivita || Shopify_Manir || FO62F4E65EAC8 || WordPress", u: [["mattdlvita123.softvenceprime.com", "https://mattdlvita123.softvenceprime.com"]], a: "2026-11-05 08:46, Tofajjal Hossain", d: "2026-11-05", p: "ecommerce", s: "staging" },
+        { n: "mikeprince83", t: "mikeprince83 || WP || Shopify_Manir", u: [["evergreeneliterentals.com", "https://evergreeneliterentals.com/"]], a: "2026-11-04 09:34, Shopify Manir", d: "2026-11-04", p: "auto", s: "live" },
+        { n: "pauldowling896", t: "pauldowling896 || tech_forge1 || WordPress || FO2DFC957742", u: [["premiumpeptides.asia", "https://premiumpeptides.asia"]], a: "2026-11-05 08:16, Shopify Manir", d: "2026-11-05", p: "peptide", s: "live" },
+        { n: "paulkear01", t: "paulkear01 || tech_forge1 || WordPress || FO4E4DE8F9B3", u: [["vertexbio.co.uk", "https://vertexbio.co.uk"]], a: "2026-11-05 09:37, Shopify Manir", d: "2026-11-05", p: "peptide", s: "verified" },
+        { n: "polenography", t: "polenography || FO8226BA01582 || shopify_manir_Fiverr || Wordpress", u: [["polenography.com/poleclasses", "https://polenography.com/poleclasses"]], a: "2026-11-05 09:34, Shakil Khan", d: "2026-11-05", p: "health", s: "verified" },
+        { n: "primapeptider", t: "primapeptider — WP_Monkey — $50 || Shopify_Manir", u: [["1292930.eu9.myftpupload.com", "https://1292930.eu9.myftpupload.com/"]], a: "2026-11-04 15:59, Farhad Hossain", d: "2026-11-04", p: "peptide", s: "staging" },
+        { n: "rosyhernandez4u", t: "rosyhernandez4u || tech_forge1 || FO429DC16E0C8 || Wordpress", u: [["vivewellnessla.com", "https://vivewellnessla.com"]], a: "2026-11-05 09:39, Tofajjal Hossain", d: "2026-11-05", p: "peptide", s: "live" },
+        { n: "sergiogp4", t: "sergiogp4 — zyrocode — $300", u: [["staging2.nfnutrition.es", "https://staging2.nfnutrition.es/"]], a: "2026-11-04 17:18, Mercury Man (only sent)", d: "2026-11-04", p: "unverified", s: "dead" },
+        { n: "shir_tan", t: "shir_tan || tech_forge1 || WordPress || FOE3A9F3D29", u: [["valoraictsolutions.com", "https://valoraictsolutions.com"]], a: "2026-11-05 09:38, Tofajjal Hossain", d: "2026-11-05", p: "business", s: "verified" },
+        { n: "skylineinspired", t: "skylineinspired -- WP_Monkey_Fiverr — $650", u: [["skylineinspired.wpsilentpress.com", "https://skylineinspired.wpsilentpress.com/"]], a: "2026-11-04 12:18, Monkey Man (only sent)", d: "2026-11-04", p: "nonprofit", s: "staging" },
+        { n: "tonypm1983", t: "tonypm1983 || tech_forge1 || WordPress || FOFFEE0B", u: [["spiffycleanco.com", "https://spiffycleanco.com"]], a: "2026-11-05 09:38, Tofajjal Hossain", d: "2026-11-05", p: "home", s: "live" },
+        { n: "Webwise", t: "Webwise || Infini_tech", u: [["webwise.wpsvaomega.com", "https://webwise.wpsvaomega.com"]], a: "2026-11-04 16:23, Farhad Hossain", d: "2026-11-04", p: "business", s: "staging" },
+        { n: "williamlowe751", t: "williamlowe751 — pixelcraft — $150 + $100", u: [["williamlowe751.wpsilentpress.com", "https://williamlowe751.wpsilentpress.com/"]], a: "2026-11-05 09:39, Aurora (only sent)", d: "2026-11-05", p: "realestate", s: "staging" },
+        { n: "xraidersx", t: "xraidersx || tech_forge1 || WordPress || FO1AF0C", u: [["mrprobatesolutions.com", "https://mrprobatesolutions.com"]], a: "2026-08-28 project message; backup pinned 2026-11-05", d: "2026-08-28", p: "realestate", s: "verified" },
+        { n: "Explorerjft", t: "Explorerjft || WP_Monkey || $150", u: [["geovortex.net", "https://geovortex.net"]], a: "2026-11-05 08:14, Monkey Man", d: "2026-11-05", p: "other", s: "live" },
+        { n: "zac_leighton", t: "zac_leighton || tech_forge1 || WordPress || FO529E46874C7", u: [["elv8labs.com.au", "https://elv8labs.com.au"]], a: "2026-11-04 16:02, Sujon Banik", d: "2026-11-04", p: "peptide", s: "live" },
+        { n: "zombiesmasher", t: "zombiesmasher || shopify_Manir || WordPress || FO1150B2F6D45", u: [["utmanimmigration.com", "https://utmanimmigration.com"]], a: "2026-11-03, Shopify Manir (only sent)", d: "2026-11-03", p: "legal", s: "live" },
+        { n: "n3tt33", t: "n3tt33 || Explorweb || #FO223313BD688 || Wordpress", u: [["starlightreikistudio.net", "https://starlightreikistudio.net"]], a: "2026-11-02, Sobuj Ali", d: "2026-11-02", p: "health", s: "live" },
+        { n: "jimjim_86", t: "jimjim_86 || tech_forge1 || WordPress || FO522D0381105", u: [["pepvibesco.com", "https://pepvibesco.com/"]], a: "2026-11-01, Shopify Manir (only sent)", d: "2026-11-01", p: "peptide", s: "verified" },
+        { n: "adam_bouzaid", t: "adam_bouzaid || twisbit || WordPress || FO61BE03C1D82", u: [["falconshocks.com.au", "https://falconshocks.com.au/"]], a: "2026-10-31, Abu Bakar", d: "2026-10-31", p: "auto", s: "live" },
+        { n: "jayzee855", t: "jayzee855 || FO31C20DE9385 || Shopify_Manir || WordPress", u: [["jayzee855.wpsvaomega.com", "https://jayzee855.wpsvaomega.com"]], a: "2026-10-28, Farhad Hossain", d: "2026-10-28", p: "travel", s: "staging" },
+        { n: "aaronsherril784", t: "aaronsherril784 || Shopify_Manir || FO527A342D1C7", u: [["movewellmobile.com", "https://movewellmobile.com/"]], a: "2026-10-25, Shopify Manir", d: "2026-10-25", p: "health", s: "verified" },
+        { n: "lmnop8", t: "lmnop8 || Shopify_Manir || WordPress || FO214866CFBC4", u: [["blumeskintreatment.com", "https://blumeskintreatment.com/"], ["lumeraskinaz.com", "https://lumeraskinaz.com/"]], a: "2025-09-22, Shopify Manir (only sent)", d: "2025-09-22", p: "skincare", s: "live" },
+        { n: "nithinchristy", t: "nithinchristy || tech_weave FO21A5D01DD86", u: [["thecrewlab.ae", "https://thecrewlab.ae/"]], a: "2025-09-10, Farhad Hossain", d: "2025-09-10", p: "business", s: "live" },
+        { n: "adrian_nmg2002", t: "adrian_nmg2002 || manir || WORDPRESS", u: [["datarecoverydepartment.com", "https://datarecoverydepartment.com"]], a: "2025-09-25, Shopify Manir (only Sent)", d: "2025-09-25", p: "unverified", s: "dead", note: "Load check: Error 525 — site live load hoy ni" },
+        { n: "skeyacht", t: "skeyacht (WP) || weaveflow || FO621A3781A84", u: [["skeyacht.com", "https://skeyacht.com/"]], a: "2025-06-15, Farhad Hossain", d: "2025-06-15", p: "travel", s: "live" },
+        { n: "abdelhadi_zabin", t: "abdelhadi_zabin || Shopify_Manir || FO1678AA328", u: [["raneenmep.com", "https://raneenmep.com"]], a: "2025-04-20, Shopify Manir (only sent)", d: "2025-04-20", p: "home", s: "live" },
+        { n: "maxsaw35", t: "maxsaw35 || Shopify_Manir || FO621A8E69C84 || Wordpress", u: [["merlinfoghlu.com", "http://merlinfoghlu.com/"]], a: "2025-04-05, Shopify Manir (only sent)", d: "2025-04-05", p: "unverified", s: "dead" },
+        { n: "xiebig", t: "xiebig || Wordpress || Shopify manir || FO7218FBBF483", u: [["applytm.com", "https://www.applytm.com/"]], a: "2025-02-27, Shopify Manir (only sent)", d: "2025-02-27", p: "unverified", s: "dead" },
+        { n: "glowaks", t: "glowaks || Shopify_Manir_Fiverr || FO72E21D2CCC7", u: [["pachocreate.com", "https://pachocreate.com/"]], a: "2025-02-26, Shopify Manir (only sent)", d: "2025-02-26", p: "home", s: "verified" },
+        { n: "e_kadem", t: "e_kadem || Shopify_Manir_Fiverr || FO821364E1182", u: [["ekadem.softvenceomega.com", "https://ekadem.softvenceomega.com/"]], a: "2025-02-18, Farhad Hossain", d: "2025-02-18", p: "unverified", s: "dead" },
+        { n: "ritanwa", t: "ritanwa || Shopify_Manir || FO35F2A1A1C1", u: [["ritachecksin.com", "https://ritachecksin.com"]], a: "2025-02-18, Sobuj Ali", d: "2025-02-18", p: "travel", s: "live" },
+        { n: "austinmowell10", t: "austinmowell10 || Shopify_Manir || WordPress || FO", u: [["aeriopartners.com", "https://aeriopartners.com/"]], a: "2025-02-18, Farhad Hossain", d: "2025-02-18", p: "business", s: "live", note: "aeriopartners.com live, kintu ei group-e pawa geleo context unclear — ei project er confirmed site na" },
+        { n: "legiondwise", t: "legiondwise || Shopify_Manir || FOA4A6C86F1C5 || WordPress", u: [["nighttidemultimedia.com", "https://nighttidemultimedia.com/"]], a: "2025-02-05, Shopify Manir (only sent)", d: "2025-02-05", p: "media", s: "verified" },
+        { n: "graemesmithnas", t: "graemesmithnas || Shopify_Manir || FO41ADF7DAB", u: [["nascorporation.biz", "https://nascorporation.biz/"]], a: "2025-01-30, Vision Byte (only sent)", d: "2025-01-30", p: "business", s: "live" },
+        { n: "matthewdarne864", t: "matthewdarne864 || Shopify_Manir || FO7BEA6BDA || WordPress", u: [["comtel.group", "https://comtel.group/"]], a: "2025-10-25, Farhad Hossain", d: "2025-10-25", p: "unverified", s: "dead" },
+        { n: "hannah_walker42", t: "hannah_walker42 || Shopify_Manir || WordPress || FO", u: [["rescuehill.org", "https://rescuehill.org/"]], a: "2025-10-10, Farhad Hossain", d: "2025-10-10", p: "nonprofit", s: "verified" },
+        { n: "siramar117", t: "siramar117 || Shopify_Manir || FO5E0DCAD7D || WordPress", u: [["simplygreenpest.com", "https://simplygreenpest.com/"]], a: "2025-09-18, Shopify Manir", d: "2025-09-18", p: "home", s: "verified" },
+        { n: "romerojp", t: "romerojp || Shopify_Manir || FO9C46E", u: [["sycnmore.com", "https://sycnmore.com/"]], a: "2025-08-31, Shopify Manir", d: "2025-08-31", p: "realestate", s: "verified" },
+        { n: "eugenio1974", t: "eugenio1974 || Shopify_Manir || WordPress || FO4C7E0A", u: [["sicilyinkayak.com/en", "https://www.sicilyinkayak.com/en/"]], a: "2025-08-25, AuraNest", d: "2025-08-25", p: "travel", s: "live" },
+        { n: "artrsmucenieks", t: "artrsmucenieks || Shopify_Manir || WordPress || FO", u: [["artrsmucenieks.softvenceomega.com", "https://artrsmucenieks.softvenceomega.com"]], a: "2025-07-29, Abdullah Bhai SVO (only sent)", d: "2025-07-29", p: "unverified", s: "dead" },
+        { n: "veratornow587", t: "veratornow587 || Shopify_Manir || WordPress || FO", u: [["veratornow587.softvenceomega.com", "https://veratornow587.softvenceomega.com"]], a: "2025-07-27, Abdullah Bhai SVO", d: "2025-07-27", p: "unverified", s: "dead" },
+        { n: "wesleysch_nl", t: "wesleysch_nl || Shopify_Manir || WordPress || FO6F7F3E63", u: [["wesleyschnl.softvenceomega.com", "https://wesleyschnl.softvenceomega.com/"]], a: "2025-07-26, Abdullah Bhai SVO (only sent)", d: "2025-07-26", p: "unverified", s: "dead" },
+        { n: "grantmcmurtrie", t: "grantmcmurtrie || Shopify_Manir || WordPress || FO", u: [["professionalamateurclub.com", "https://professionalamateurclub.com"]], a: "2025-07-21, Farhad Hossain", d: "2025-07-21", p: "nonprofit", s: "responds" },
+        { n: "adam_luetto", t: "adam_luetto || Shopify_Manir || WordPress || FO5D36E9", u: [["adamluetto.softvenceomega.com", "https://adamluetto.softvenceomega.com"]], a: "2025-06-24, Farhad Hossain", d: "2025-06-24", p: "unverified", s: "dead" },
+        { n: "elisha_k123", t: "elisha_k123 || Shopify_Manir || WordPress || FO", u: [["elisha.softvenceomega.com", "https://elisha.softvenceomega.com"]], a: "2025-06-19, Farhad Hossain", d: "2025-06-19", p: "unverified", s: "dead" },
+        { n: "brooke_lea_smit", t: "brooke_lea_smit || tech_forge1 || WordPress || FO8AA0D", u: [["lucidvue.com", "https://lucidvue.com/"]], a: "2026-11-05 09:35, Tofajjal Hossain", d: "2026-11-05", p: "media", s: "verified" },
+        { n: "jasonchicago", t: "jasonchicago || tech_forge1 || WordPress || FO28F1E9C2A", u: [["ionixpeptide.com", "https://ionixpeptide.com/"]], a: "2026-11-05 09:30, Tofajjal Hossain", d: "2026-11-05", p: "peptide", s: "responds" },
+        { n: "tanyagw", t: "tanyagw || tech_forge1 || FO7DB9D7D9F", u: [["generationswellness.org", "https://generationswellness.org"]], a: "2026-11-05 09:27, Tofajjal Hossain", d: "2026-11-05", p: "health", s: "live" },
+        { n: "murka23", t: "murka23 || Shopify_Manir || WordPress || FO", u: [["upandupremodeling.com", "https://upandupremodeling.com/"]], a: "2026-11-04 14:28, Ziaul Karim", d: "2026-11-04", p: "unverified", s: "dead" },
+        { n: "marc1biz", t: "marc1biz || Shopify_Manir || WordPress || FO", u: [["cabinetexpo.com", "https://cabinetexpo.com/"]], a: "2026-11-04 15:35, Maruf Khan", d: "2026-11-04", p: "home", s: "verified" },
+        { n: "tim_jr12", t: "tim_jr12 || Shopify_Manir || WordPress || FO", u: [["almapeptides.com", "https://almapeptides.com"]], a: "2026-11-04 10:10, Farhad Hossain", d: "2026-11-04", p: "peptide", s: "live" },
+        { n: "dipz_330", t: "dipz_330 || Shopify_Manir || WordPress || FO", u: [["dipz330.softvenceprime.com", "https://dipz330.softvenceprime.com"]], a: "2026-11-04 12:57, Shohag Rana", d: "2026-11-04", p: "unverified", s: "dead" },
+        { n: "aahud19", t: "aahud19 || Shopify_Manir || WordPress || FO", u: [["sdannex.org", "https://sdannex.org"]], a: "2026-11-04 15:20, Shohag Rana", d: "2026-11-04", p: "legal", s: "live" },
+        { n: "ebedj6922", t: "ebedj6922 || Shopify_Manir || WordPress || FO", u: [["pursuitofjoy.org", "https://pursuitofjoy.org/"]], a: "2026-11-04 15:03, Tofajjal Hossain", d: "2026-11-04", p: "nonprofit", s: "verified" },
+        { n: "cgollins", t: "cgollins || Shopify_Manir || WordPress || FO", u: [["ptagrading.com", "https://ptagrading.com/"]], a: "2026-11-04 16:35, Tofajjal Hossain", d: "2026-11-04", p: "unverified", s: "dead", note: "Load check: blank / lander page — live site na" },
+        { n: "tailiu604", t: "tailiu604 || Shopify_Manir || WordPress || FO", u: [["trdgarage.com", "https://trdgarage.com"]], a: "2026-07-31, Farhad Hossain", d: "2026-07-31", p: "auto", s: "responds" },
+        { n: "marielalvara835", t: "marielalvara835 || Shopify_Manir || WordPress || FO", u: [["nibadesigns.com", "https://nibadesigns.com/"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "unverified", s: "dead" },
+        { n: "jordancbassett", t: "jordancbassett || Shopify_Manir || WordPress || FO", u: [["upliftpeptide.com", "https://upliftpeptide.com/"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "peptide", s: "verified" },
+        { n: "omarc2657", t: "omarc2657 || Shopify_Manir || WordPress || FO", u: [["displaykingdom.com.au", "https://displaykingdom.com.au/"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "ecommerce", s: "live" },
+        { n: "goldmount", t: "goldmount || Shopify_Manir || WordPress || FO", u: [["epilabpeptides.com", "https://epilabpeptides.com/"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "peptide", s: "responds" },
+        { n: "ryanswimusa", t: "ryanswimusa || Shopify_Manir || WordPress || FO", u: [["hilligerinc.com", "https://hilligerinc.com"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "unverified", s: "dead", note: "Load check: privacy / certificate error — live confirm hoy ni" },
+        { n: "redmanroo", t: "redmanroo || Shopify_Manir || WordPress || FO", u: [["aegispeptidex.com", "https://aegispeptidex.com"]], a: "2026-06-09, Sales (only sent)", d: "2026-06-09", p: "peptide", s: "live" },
+        { n: "oh_hale", t: "oh_hale || Shopify_Manir || WordPress || FO", u: [["goldenpondretirement.com", "https://goldenpondretirement.com/"]], a: "2026-05-22, Emon Hossain", d: "2026-05-22", p: "realestate", s: "verified" },
+        { n: "alexgverstacct", t: "alexgverstacct || Shopify_Manir || WordPress || FO", u: [["versatilegrowth.com.au", "https://versatilegrowth.com.au/"]], a: "2026-05-16, Farhad Hossain", d: "2026-05-16", p: "business", s: "verified" },
+        { n: "beth_hinkson", t: "beth_hinkson || shopify_Manir || FO21522C272C4", u: [["beth.wpsvaomega.com", "https://beth.wpsvaomega.com/"]], a: "2026-11-05 08:34, Farhad Hossain", d: "2026-11-05", p: "nonprofit", s: "staging" }
       ];
 
       var CATS = [
         { id: "all", label: "Shob Project", desc: "" },
-        { id: "wp", label: "WordPress", desc: "Shob project-i WordPress-e kora. Kichu group title-e thaka \'Shopify_Manir\' holo handler er nam — platform na, tai kono alada Shopify category nei." }
+        { id: "peptide", label: "Peptide", desc: "" },
+        { id: "nonprofit", label: "Non-profit & Community", desc: "" },
+        { id: "business", label: "Business & Marketing", desc: "" },
+        { id: "home", label: "Home Services & Remodeling", desc: "" },
+        { id: "health", label: "Health & Wellness", desc: "" },
+        { id: "realestate", label: "Real Estate & Property", desc: "" },
+        { id: "travel", label: "Travel & Leisure", desc: "" },
+        { id: "ecommerce", label: "E-commerce / Retail", desc: "" },
+        { id: "media", label: "Media & Creative", desc: "" },
+        { id: "auto", label: "Automotive", desc: "" },
+        { id: "skincare", label: "Skincare & Beauty", desc: "" },
+        { id: "legal", label: "Legal & Immigration", desc: "" },
+        { id: "vape", label: "Vape & Smoke", desc: "" },
+        { id: "other", label: "Other", desc: "" },
+        { id: "unverified", label: "Site khole na / Unverified", desc: "" }
       ];
+      // Prottek project er FIXED category label — card er tag ar search duitai ei field thekei ashe.
+      var CAT_LABEL = {
+        peptide: "Peptide",
+        nonprofit: "Non-profit & Community",
+        business: "Business & Marketing",
+        home: "Home Services & Remodeling",
+        health: "Health & Wellness",
+        realestate: "Real Estate & Property",
+        travel: "Travel & Leisure",
+        ecommerce: "E-commerce / Retail",
+        media: "Media & Creative",
+        auto: "Automotive",
+        skincare: "Skincare & Beauty",
+        legal: "Legal & Immigration",
+        vape: "Vape & Smoke",
+        other: "Other",
+        unverified: "Unverified"
+      };
       var STATUS = {
         verified: { label: "Verified live", cls: "verified" },
         live: { label: "Live link", cls: "live" },
@@ -392,7 +431,7 @@
 
       function renderChips() {
         $("chips").innerHTML = CATS.map(function (c) {
-          return '<button class="chip' + (state.cat === c.id ? " active" : "") + '" data-cat="' + c.id + '" role="tab" aria-selected="' + (state.cat === c.id) + '">' +
+          return '<button class="chip' + (state.cat === c.id ? " active" : "") + (c.id === "unverified" ? " muted" : "") + '" data-cat="' + c.id + '" role="tab" aria-selected="' + (state.cat === c.id) + '">' +
             esc(c.label) + ' <span class="n">' + catCount(c.id) + '</span></button>';
         }).join("");
         var btns = $("chips").querySelectorAll(".chip");
@@ -434,34 +473,9 @@
         }
         return row[b.length];
       }
+      // Category ekhon prottek project er fixed field (p) — domain/name theke andaje tag banano hoy na.
       function getTags(p) {
-        var src = squash(p.n) + " " + p.u.map(function (x) { return x[0]; }).join(" ").toLowerCase() + " " + norm(p.t);
-        var tags = [];
-        function has() { for (var i = 0; i < arguments.length; i++) if (src.indexOf(arguments[i]) !== -1) return true; return false; }
-        if (has("peptide")) tags.push("Peptide");
-        if (has("skin", "blume", "lumera")) tags.push("Skincare");
-        if (has("vape")) tags.push("Vape");
-        if (has("pole", "polenography")) tags.push("Pole Fitness");
-        if (has("wellness", "vivewell", "generationswellness")) tags.push("Wellness");
-        if (has("probate")) tags.push("Probate / Legal");
-        if (has("yacht", "marine")) tags.push("Yacht / Marine");
-        if (has("pest")) tags.push("Pest Control");
-        if (has("hair")) tags.push("Hair & Beauty");
-        if (has("bio")) tags.push("Biotech");
-        if (has("ict", "valora")) tags.push("IT Solutions");
-        if (has("remodel", "cabinet")) tags.push("Home Remodeling");
-        if (has("retirement", "goldenpond")) tags.push("Retirement");
-        if (has("immigration", "utman")) tags.push("Immigration");
-        if (has("merchandising")) tags.push("Merchandising");
-        if (has("datarecovery")) tags.push("Data Recovery");
-        if (has("shocks", "falcon")) tags.push("Automotive");
-        if (has("pepvibes")) tags.push("Wellness Products");
-        if (!tags.length) {
-          var dom = p.u[0] ? p.u[0][0].replace(/^www\./, "").split("/")[0] : "";
-          var base = dom.split(".")[0];
-          if (base) tags.push(base);
-        }
-        return tags.slice(0, 3);
+        return [CAT_LABEL[p.p] || "Other"];
       }
       function haystack(p) {
         return {
@@ -574,13 +588,13 @@
           CATS.slice(1).forEach(function (c) {
             var items = filtered.filter(function (p) { return p.p === c.id; });
             if (!items.length) return;
-            html += '<section class="cat"><div class="cat-head"><h2>' + esc(c.label) + '</h2><span class="count">' + items.length + ' ta group</span><p>' + esc(c.desc) + '</p></div>' +
+            html += '<section class="cat' + (c.id === "unverified" ? " dim" : "") + '"><div class="cat-head"><h2>' + esc(c.label) + '</h2><span class="count">' + items.length + ' ta group</span>' + (c.desc ? '<p>' + esc(c.desc) + '</p>' : '') + '</div>' +
               '<div class="grid">' + items.map(cardHTML).join("") + '</div></section>';
           });
         } else {
           var c = CATS.filter(function (x) { return x.id === state.cat; })[0];
           if (filtered.length) {
-            html = '<section class="cat"><div class="cat-head"><h2>' + esc(c.label) + '</h2><span class="count">' + filtered.length + ' ta group</span><p>' + esc(c.desc) + '</p></div>' +
+            html = '<section class="cat' + (c.id === "unverified" ? " dim" : "") + '"><div class="cat-head"><h2>' + esc(c.label) + '</h2><span class="count">' + filtered.length + ' ta group</span>' + (c.desc ? '<p>' + esc(c.desc) + '</p>' : '') + '</div>' +
               '<div class="grid">' + filtered.map(cardHTML).join("") + '</div></section>';
           }
         }
