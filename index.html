@@ -5,53 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="color-scheme" content="light dark" />
     <link rel="icon" href="data:," />
-    <title>Telegram Project Groups</title>
+    <title>Project</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
     <style>
       :root {
         color-scheme: light dark;
-        --bg: #f4f6f3;
-        --bg-2: #eaf0ea;
+        --bg: #ffffff;
+        --bg-2: #f4f4f4;
         --surface: #ffffff;
-        --surface-2: #f8faf8;
-        --ink: #14201a;
-        --ink-2: #46564d;
-        --ink-3: #75847b;
-        --line: #dce4dc;
-        --brand: #14532d;
-        --brand-2: #166534;
-        --brand-soft: #e3efe4;
-        --gold: #b45309;
-        --gold-soft: #fdf0dd;
-        --red: #b42318;
-        --red-soft: #fdecea;
-        --blue: #175cd3;
-        --blue-soft: #e8f0fe;
-        --shadow: 0 1px 2px rgba(16, 42, 28, .05), 0 10px 28px -18px rgba(16, 42, 28, .28);
+        --surface-2: #fafafa;
+        --ink: #000000;
+        --ink-2: #2b2b2b;
+        --ink-3: #6b6b6b;
+        --line: #e3e3e3;
+        --brand: #000000;
+        --brand-2: #000000;
+        --brand-soft: #eeeeee;
+        --gold: #000000;
+        --gold-soft: #eeeeee;
+        --red: #000000;
+        --red-soft: #eeeeee;
+        --blue: #000000;
+        --blue-soft: #eeeeee;
+        --shadow: 0 1px 2px rgba(0, 0, 0, .06), 0 10px 28px -18px rgba(0, 0, 0, .22);
         --radius: 14px;
       }
       @media (prefers-color-scheme: dark) {
         :root {
-          --bg: #0d130f;
-          --bg-2: #111a14;
-          --surface: #16211a;
-          --surface-2: #1a271f;
-          --ink: #ecf3ee;
-          --ink-2: #b3c2b8;
-          --ink-3: #82958a;
-          --line: #26362c;
-          --brand: #4ade80;
-          --brand-2: #86efac;
-          --brand-soft: #173324;
-          --gold: #fbbf24;
-          --gold-soft: #33270e;
-          --red: #fda29b;
-          --red-soft: #3a1d1a;
-          --blue: #84adff;
-          --blue-soft: #17283f;
-          --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -18px rgba(0,0,0,.7);
+          --bg: #000000;
+          --bg-2: #1a1a1a;
+          --surface: #111111;
+          --surface-2: #1a1a1a;
+          --ink: #ffffff;
+          --ink-2: #d4d4d4;
+          --ink-3: #9a9a9a;
+          --line: #2e2e2e;
+          --brand: #ffffff;
+          --brand-2: #ffffff;
+          --brand-soft: #262626;
+          --gold: #ffffff;
+          --gold-soft: #262626;
+          --red: #ffffff;
+          --red-soft: #262626;
+          --blue: #ffffff;
+          --blue-soft: #262626;
+          --shadow: 0 1px 2px rgba(0,0,0,.6), 0 12px 30px -18px rgba(0,0,0,.9);
         }
       }
       * { box-sizing: border-box; }
@@ -71,16 +71,17 @@
 
       /* ---------- Hero ---------- */
       .hero {
-        background: linear-gradient(160deg, #0d3b21 0%, #14532d 55%, #1a6b3c 100%);
-        color: #f2f8f3;
+        background: #000000;
+        color: #ffffff;
         padding: 40px 0 34px;
+        border-bottom: 1px solid #000000;
       }
       @media (prefers-color-scheme: dark) {
-        .hero { background: linear-gradient(160deg, #0a2415 0%, #103a20 55%, #14532d 100%); }
+        .hero { background: #000000; border-bottom-color: #2e2e2e; }
       }
       .hero-top { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-end; justify-content: space-between; }
       .hero h1 { font-size: clamp(26px, 4.4vw, 40px); line-height: 1.12; margin: 0 0 8px; font-weight: 800; letter-spacing: -.01em; }
-      .hero p.lede { margin: 0; max-width: 620px; color: #cfe6d4; font-size: 15px; line-height: 1.55; }
+      .hero p.lede { margin: 0; max-width: 620px; color: #d4d4d4; font-size: 15px; line-height: 1.55; }
       .hero .sheet-link {
         display: inline-flex; align-items: center; gap: 8px;
         background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.28);
@@ -94,7 +95,7 @@
         border-radius: var(--radius); padding: 14px 16px;
       }
       .stat b { display: block; font-family: "Lexend", sans-serif; font-size: 26px; font-weight: 700; line-height: 1; }
-      .stat span { display: block; margin-top: 6px; font-size: 12px; color: #cfe6d4; letter-spacing: .02em; }
+      .stat span { display: block; margin-top: 6px; font-size: 12px; color: #d4d4d4; letter-spacing: .02em; }
       @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
 
       /* ---------- Controls ---------- */
@@ -126,7 +127,7 @@
         padding: 10px 30px 10px 12px; border: 1px solid var(--line); border-radius: 10px;
         background: var(--surface); color: var(--ink); font-size: 13.5px; font-weight: 500; cursor: pointer;
         appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2375847b' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%23666666' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
         background-repeat: no-repeat; background-position: right 11px center;
       }
       .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
@@ -137,9 +138,9 @@
       }
       .chip .n { font-size: 11.5px; background: var(--bg-2); color: var(--ink-2); border-radius: 999px; padding: 1px 7px; font-weight: 700; }
       .chip:hover { border-color: var(--brand-2); color: var(--ink); }
-      .chip.active { background: var(--brand); border-color: var(--brand); color: #fff; }
-      .chip.active .n { background: rgba(255,255,255,.22); color: #fff; }
-      @media (prefers-color-scheme: dark) { .chip.active { color: #0d130f; } .chip.active .n { background: rgba(0,0,0,.18); color: #0d130f; } }
+      .chip.active { background: #000000; border-color: #000000; color: #ffffff; }
+      .chip.active .n { background: rgba(255,255,255,.22); color: #ffffff; }
+      @media (prefers-color-scheme: dark) { .chip.active { background: #ffffff; border-color: #ffffff; color: #000000; } .chip.active .n { background: rgba(0,0,0,.14); color: #000000; } }
       .result-line { margin-top: 10px; font-size: 13px; color: var(--ink-3); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
       .result-line button { border: 0; background: none; color: var(--brand-2); font-weight: 600; font-size: 13px; cursor: pointer; padding: 0; display: none; }
       .result-line button:hover { text-decoration: underline; }
@@ -168,13 +169,21 @@
       }
       .card h3 { margin: 0; font-size: 16.5px; font-weight: 700; word-break: break-word; line-height: 1.25; }
       .group-title { font-size: 12px; color: var(--ink-3); line-height: 1.45; word-break: break-word; }
-      .pill { font-size: 11px; font-weight: 700; padding: 4px 9px; border-radius: 999px; white-space: nowrap; letter-spacing: .01em; }
-      .pill.verified { background: var(--brand-soft); color: var(--brand-2); }
-      .pill.responds { background: var(--gold-soft); color: var(--gold); }
-      .pill.staging { background: var(--red-soft); color: var(--red); }
-      .pill.live { background: var(--blue-soft); color: var(--blue); }
-      .pill.dead { background: var(--red-soft); color: var(--red); text-decoration: line-through; }
-      .pill.unconfirmed { background: var(--gold-soft); color: var(--gold); }
+      .pill { font-size: 11px; font-weight: 700; padding: 4px 9px; border-radius: 999px; white-space: nowrap; letter-spacing: .01em; border: 1px solid var(--line); }
+      .pill.verified { background: #000000; border-color: #000000; color: #ffffff; }
+      .pill.responds { background: #ffffff; color: #000000; border-color: #000000; }
+      .pill.staging { background: #eeeeee; color: #000000; }
+      .pill.live { background: #ffffff; color: #000000; }
+      .pill.dead { background: #e3e3e3; color: #555555; text-decoration: line-through; }
+      .pill.unconfirmed { background: #f4f4f4; color: #333333; border-style: dashed; border-color: #999999; }
+      @media (prefers-color-scheme: dark) {
+        .pill.verified { background: #ffffff; border-color: #ffffff; color: #000000; }
+        .pill.responds { background: #000000; color: #ffffff; border-color: #ffffff; }
+        .pill.staging { background: #262626; color: #ffffff; }
+        .pill.live { background: #111111; color: #ffffff; }
+        .pill.dead { background: #262626; color: #9a9a9a; }
+        .pill.unconfirmed { background: #1a1a1a; color: #d4d4d4; border-color: #6b6b6b; }
+      }
       .links { display: flex; flex-direction: column; gap: 6px; margin-top: auto; }
       .site-link {
         display: flex; align-items: center; gap: 8px;
@@ -201,7 +210,7 @@
       .suggest {
         position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 60;
         background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
-        box-shadow: 0 18px 40px -18px rgba(16,42,28,.35); overflow: hidden; display: none;
+        box-shadow: 0 18px 40px -18px rgba(0,0,0,.35); overflow: hidden; display: none;
       }
       .suggest.open { display: block; }
       .suggest-head { padding: 9px 12px 7px; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); background: var(--surface-2); border-bottom: 1px solid var(--line); }
@@ -219,9 +228,10 @@
       .search-hint b { color: var(--ink-2); }
       .tags { display: flex; flex-wrap: wrap; gap: 6px; }
       .tag { font-size: 11px; font-weight: 600; line-height: 1; padding: 5px 8px; border-radius: 999px; background: var(--bg-2); color: var(--ink-2); border: 1px solid var(--line); }
-      .tag.match { background: var(--gold-soft); color: var(--gold); border-color: color-mix(in srgb, var(--gold) 35%, var(--line)); }
-      mark { background: #fde68a; color: #713f12; border-radius: 3px; padding: 0 1px; }
-      @media (prefers-color-scheme: dark) { mark { background: #854d0e; color: #fef3c7; } }
+      .tag.match { background: #000000; color: #ffffff; border-color: #000000; }
+      @media (prefers-color-scheme: dark) { .tag.match { background: #ffffff; color: #000000; border-color: #ffffff; } }
+      mark { background: #000000; color: #ffffff; border-radius: 3px; padding: 0 1px; }
+      @media (prefers-color-scheme: dark) { mark { background: #ffffff; color: #000000; } }
     </style>
   </head>
   <body>
@@ -229,8 +239,7 @@
       <div class="wrap">
         <div class="hero-top">
           <div>
-            <h1>Telegram Project Groups</h1>
-            <p class="lede">Shob WP Planet project group ek jaygay — client handle, live website link, latest activity ar verification status shoho. Category onujayi sajano, search ar filter diye jekono project seconds-e khuje pawa jay.</p>
+            <h1>Project</h1>
           </div>
           <a class="sheet-link" href="https://docs.google.com/spreadsheets/d/17rNK6ce-1BuWd2XmSJK-tTELH2zPMTTs1SmkjUknl7Q/edit" target="_blank" rel="noopener">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7"/><path d="M10 14L21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
