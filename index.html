@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="data:," />
+    <title>Telegram Project Groups</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f4f6f3;
+        --bg-2: #eaf0ea;
+        --surface: #ffffff;
+        --surface-2: #f8faf8;
+        --ink: #14201a;
+        --ink-2: #46564d;
+        --ink-3: #75847b;
+        --line: #dce4dc;
+        --brand: #14532d;
+        --brand-2: #166534;
+        --brand-soft: #e3efe4;
+        --gold: #b45309;
+        --gold-soft: #fdf0dd;
+        --red: #b42318;
+        --red-soft: #fdecea;
+        --blue: #175cd3;
+        --blue-soft: #e8f0fe;
+        --shadow: 0 1px 2px rgba(16, 42, 28, .05), 0 10px 28px -18px rgba(16, 42, 28, .28);
+        --radius: 14px;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0d130f;
+          --bg-2: #111a14;
+          --surface: #16211a;
+          --surface-2: #1a271f;
+          --ink: #ecf3ee;
+          --ink-2: #b3c2b8;
+          --ink-3: #82958a;
+          --line: #26362c;
+          --brand: #4ade80;
+          --brand-2: #86efac;
+          --brand-soft: #173324;
+          --gold: #fbbf24;
+          --gold-soft: #33270e;
+          --red: #fda29b;
+          --red-soft: #3a1d1a;
+          --blue: #84adff;
+          --blue-soft: #17283f;
+          --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px -18px rgba(0,0,0,.7);
+        }
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        -webkit-font-smoothing: antialiased;
+      }
+      h1, h2, h3, .lexend { font-family: "Lexend", "Inter", system-ui, sans-serif; }
+      a { color: inherit; }
+      button, input, select { font: inherit; }
+
+      .wrap { max-width: 1240px; margin: 0 auto; padding: 0 20px; }
+
+      /* ---------- Hero ---------- */
+      .hero {
+        background: linear-gradient(160deg, #0d3b21 0%, #14532d 55%, #1a6b3c 100%);
+        color: #f2f8f3;
+        padding: 40px 0 34px;
+      }
+      @media (prefers-color-scheme: dark) {
+        .hero { background: linear-gradient(160deg, #0a2415 0%, #103a20 55%, #14532d 100%); }
+      }
+      .hero-top { display: flex; flex-wrap: wrap; gap: 18px; align-items: flex-end; justify-content: space-between; }
+      .hero h1 { font-size: clamp(26px, 4.4vw, 40px); line-height: 1.12; margin: 0 0 8px; font-weight: 800; letter-spacing: -.01em; }
+      .hero p.lede { margin: 0; max-width: 620px; color: #cfe6d4; font-size: 15px; line-height: 1.55; }
+      .hero .sheet-link {
+        display: inline-flex; align-items: center; gap: 8px;
+        background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.28);
+        color: #fff; text-decoration: none; font-size: 13px; font-weight: 600;
+        padding: 9px 14px; border-radius: 999px; white-space: nowrap;
+      }
+      .hero .sheet-link:hover { background: rgba(255,255,255,.2); }
+      .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 28px; }
+      .stat {
+        background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14);
+        border-radius: var(--radius); padding: 14px 16px;
+      }
+      .stat b { display: block; font-family: "Lexend", sans-serif; font-size: 26px; font-weight: 700; line-height: 1; }
+      .stat span { display: block; margin-top: 6px; font-size: 12px; color: #cfe6d4; letter-spacing: .02em; }
+      @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+      /* ---------- Controls ---------- */
+      .controls {
+        position: sticky; top: 0; z-index: 40;
+        background: color-mix(in srgb, var(--bg) 88%, transparent);
+        backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--line);
+        padding: 14px 0 12px;
+      }
+      .search-row { display: flex; gap: 10px; flex-wrap: wrap; }
+      .search-box { position: relative; flex: 1 1 260px; }
+      .search-box svg { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); width: 17px; height: 17px; color: var(--ink-3); pointer-events: none; }
+      .search-box input {
+        width: 100%; padding: 11px 38px 11px 38px;
+        border: 1px solid var(--line); border-radius: 10px;
+        background: var(--surface); color: var(--ink); font-size: 14.5px;
+        outline: none;
+      }
+      .search-box input:focus { border-color: var(--brand-2); box-shadow: 0 0 0 3px var(--brand-soft); }
+      .search-clear {
+        position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+        border: 0; background: transparent; color: var(--ink-3); cursor: pointer;
+        width: 28px; height: 28px; border-radius: 8px; font-size: 16px; line-height: 1; display: none;
+      }
+      .search-clear:hover { background: var(--surface-2); color: var(--ink); }
+      .selects { display: flex; gap: 8px; flex-wrap: wrap; }
+      .selects select {
+        padding: 10px 30px 10px 12px; border: 1px solid var(--line); border-radius: 10px;
+        background: var(--surface); color: var(--ink); font-size: 13.5px; font-weight: 500; cursor: pointer;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2375847b' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 11px center;
+      }
+      .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+      .chip {
+        border: 1px solid var(--line); background: var(--surface); color: var(--ink-2);
+        padding: 7px 13px; border-radius: 999px; font-size: 13px; font-weight: 600; cursor: pointer;
+        display: inline-flex; align-items: center; gap: 7px;
+      }
+      .chip .n { font-size: 11.5px; background: var(--bg-2); color: var(--ink-2); border-radius: 999px; padding: 1px 7px; font-weight: 700; }
+      .chip:hover { border-color: var(--brand-2); color: var(--ink); }
+      .chip.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+      .chip.active .n { background: rgba(255,255,255,.22); color: #fff; }
+      @media (prefers-color-scheme: dark) { .chip.active { color: #0d130f; } .chip.active .n { background: rgba(0,0,0,.18); color: #0d130f; } }
+      .result-line { margin-top: 10px; font-size: 13px; color: var(--ink-3); display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+      .result-line button { border: 0; background: none; color: var(--brand-2); font-weight: 600; font-size: 13px; cursor: pointer; padding: 0; display: none; }
+      .result-line button:hover { text-decoration: underline; }
+
+      /* ---------- Sections & cards ---------- */
+      main { padding: 8px 0 30px; }
+      section.cat { margin-top: 30px; }
+      .cat-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+      .cat-head h2 { margin: 0; font-size: 20px; font-weight: 700; letter-spacing: -.01em; }
+      .cat-head .count { font-size: 12.5px; font-weight: 700; background: var(--brand-soft); color: var(--brand-2); padding: 3px 10px; border-radius: 999px; }
+      .cat-head p { margin: 0; font-size: 13px; color: var(--ink-3); flex-basis: 100%; }
+      .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      @media (max-width: 1020px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+      @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } }
+      .card {
+        background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+        padding: 16px 16px 14px; box-shadow: var(--shadow);
+        display: flex; flex-direction: column; gap: 10px; min-width: 0;
+      }
+      .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+      .avatar {
+        width: 40px; height: 40px; flex: 0 0 40px; border-radius: 11px;
+        background: var(--brand-soft); color: var(--brand-2);
+        display: flex; align-items: center; justify-content: center;
+        font-family: "Lexend", sans-serif; font-weight: 700; font-size: 15px; text-transform: uppercase;
+      }
+      .card h3 { margin: 0; font-size: 16.5px; font-weight: 700; word-break: break-word; line-height: 1.25; }
+      .group-title { font-size: 12px; color: var(--ink-3); line-height: 1.45; word-break: break-word; }
+      .pill { font-size: 11px; font-weight: 700; padding: 4px 9px; border-radius: 999px; white-space: nowrap; letter-spacing: .01em; }
+      .pill.verified { background: var(--brand-soft); color: var(--brand-2); }
+      .pill.responds { background: var(--gold-soft); color: var(--gold); }
+      .pill.staging { background: var(--red-soft); color: var(--red); }
+      .pill.live { background: var(--blue-soft); color: var(--blue); }
+      .pill.dead { background: var(--red-soft); color: var(--red); text-decoration: line-through; }
+      .pill.unconfirmed { background: var(--gold-soft); color: var(--gold); }
+      .links { display: flex; flex-direction: column; gap: 6px; margin-top: auto; }
+      .site-link {
+        display: flex; align-items: center; gap: 8px;
+        background: var(--surface-2); border: 1px solid var(--line); border-radius: 9px;
+        padding: 9px 11px; text-decoration: none; font-size: 13.5px; font-weight: 600; color: var(--brand-2);
+        min-width: 0;
+      }
+      .site-link span { word-break: break-all; line-height: 1.35; }
+      .site-link svg { flex: 0 0 14px; width: 14px; height: 14px; }
+      .site-link:hover { border-color: var(--brand-2); }
+      .meta { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--ink-3); border-top: 1px dashed var(--line); padding-top: 10px; }
+      .meta b { color: var(--ink-2); font-weight: 600; }
+      .empty {
+        display: none; text-align: center; padding: 56px 20px; margin-top: 30px;
+        background: var(--surface); border: 1px dashed var(--line); border-radius: var(--radius);
+      }
+      .empty h3 { margin: 0 0 6px; font-size: 17px; }
+      .empty p { margin: 0; color: var(--ink-3); font-size: 14px; }
+      footer { border-top: 1px solid var(--line); padding: 22px 0 34px; margin-top: 36px; }
+      footer p { margin: 0 0 6px; font-size: 13px; color: var(--ink-3); line-height: 1.6; }
+      footer a { color: var(--brand-2); font-weight: 600; }
+      .kbd-hint { font-size: 12px; color: var(--ink-3); }
+      /* ---------- Smart search: suggestions, tags, highlight ---------- */
+      .suggest {
+        position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 60;
+        background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+        box-shadow: 0 18px 40px -18px rgba(16,42,28,.35); overflow: hidden; display: none;
+      }
+      .suggest.open { display: block; }
+      .suggest-head { padding: 9px 12px 7px; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); background: var(--surface-2); border-bottom: 1px solid var(--line); }
+      .suggest-item {
+        width: 100%; display: flex; align-items: center; gap: 10px; text-align: left;
+        padding: 10px 12px; border: 0; border-bottom: 1px solid var(--line); background: var(--surface);
+        cursor: pointer; color: var(--ink);
+      }
+      .suggest-item:last-child { border-bottom: 0; }
+      .suggest-item:hover, .suggest-item.active { background: var(--brand-soft); }
+      .suggest-item .s-name { font-weight: 700; font-size: 14px; line-height: 1.2; }
+      .suggest-item .s-domain { font-size: 12px; color: var(--ink-3); word-break: break-all; }
+      .suggest-item .s-tag { margin-left: auto; flex: 0 0 auto; font-size: 11px; font-weight: 700; background: var(--bg-2); color: var(--ink-2); padding: 3px 8px; border-radius: 999px; }
+      .search-hint { margin-top: 8px; font-size: 12.5px; color: var(--ink-3); line-height: 1.5; }
+      .search-hint b { color: var(--ink-2); }
+      .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+      .tag { font-size: 11px; font-weight: 600; line-height: 1; padding: 5px 8px; border-radius: 999px; background: var(--bg-2); color: var(--ink-2); border: 1px solid var(--line); }
+      .tag.match { background: var(--gold-soft); color: var(--gold); border-color: color-mix(in srgb, var(--gold) 35%, var(--line)); }
+      mark { background: #fde68a; color: #713f12; border-radius: 3px; padding: 0 1px; }
+      @media (prefers-color-scheme: dark) { mark { background: #854d0e; color: #fef3c7; } }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="wrap">
+        <div class="hero-top">
+          <div>
+            <h1>Telegram Project Groups</h1>
+            <p class="lede">Shob WP Planet project group ek jaygay — client handle, live website link, latest activity ar verification status shoho. Category onujayi sajano, search ar filter diye jekono project seconds-e khuje pawa jay.</p>
+          </div>
+          <a class="sheet-link" href="https://docs.google.com/spreadsheets/d/17rNK6ce-1BuWd2XmSJK-tTELH2zPMTTs1SmkjUknl7Q/edit" target="_blank" rel="noopener">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7"/><path d="M10 14L21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"/></svg>
+            Source Google Sheet
+          </a>
+        </div>
+        <div class="stats" id="stats"></div>
+      </div>
+    </header>
+
+    <div class="controls">
+      <div class="wrap">
+        <div class="search-row">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            <input id="q" type="search" placeholder="Client er nam likho — ek ongsho likhlei mile jabe…  ( jemon: calderon, pole, peptide, skin )" autocomplete="off" aria-autocomplete="list" aria-expanded="false" aria-controls="suggestBox" />
+            <button class="search-clear" id="qClear" aria-label="Clear search">&times;</button>
+            <div class="suggest" id="suggestBox" role="listbox" aria-label="Matching clients"></div>
+          </div>
+          <div class="selects">
+            <select id="fStatus" aria-label="Filter by link status">
+              <option value="all">Link status: Shob</option>
+              <option value="verified">Verified live</option>
+              <option value="live">Live link</option>
+              <option value="responds">Domain responds</option>
+              <option value="staging">Staging / Dev / Temp</option>
+              <option value="dead">Live na (load fail)</option>
+              <option value="unconfirmed">Context unclear</option>
+            </select>
+            <select id="fYear" aria-label="Filter by latest activity year">
+              <option value="all">Activity: Shob year</option>
+              <option value="2026">2026</option>
+              <option value="2025">2025</option>
+            </select>
+            <select id="fSort" aria-label="Sort projects">
+              <option value="recent">Sort: Latest activity</option>
+              <option value="oldest">Sort: Oldest activity</option>
+              <option value="az">Sort: Name A–Z</option>
+            </select>
+          </div>
+        </div>
+        <p class="search-hint" id="searchHint">Client er <b>namer ek ongsho</b>, <b>domain er ongsho</b> ba <b>niche / bisoy</b> likhlei hobe — mile gele niche dekhabe. Jemon: <b>calderon</b> → bj_calderon, <b>peptide</b> → shob peptide client, <b>skin</b> → skincare client, <b>bj calderon</b> (space diye) o cholbe, underscore lage na.</p>
+        <div class="chips" id="chips" role="tablist" aria-label="Platform categories"></div>
+        <div class="result-line">
+          <span id="resultCount"></span>
+          <button id="resetBtn">Reset shob filter</button>
+        </div>
+      </div>
+    </div>
+
+    <main class="wrap" id="main"></main>
+    <div class="wrap">
+      <div class="empty" id="empty">
+        <h3>Kono project mile ni</h3>
+        <p>Search ba filter change kore abar try koro — athoba Reset diye shob group abar dekhao.</p>
+      </div>
+    </div>
+
+    <footer>
+      <div class="wrap">
+        <p><b>Data snapshot:</b> 5 November 2026 — <a href="https://docs.google.com/spreadsheets/d/17rNK6ce-1BuWd2XmSJK-tTELH2zPMTTs1SmkjUknl7Q/edit" target="_blank" rel="noopener">Telegram Project Groups — A to Z</a> Google Sheet theke neya. Sheet update hole ei page-o rebuild kore update korte hobe.</p>
+        <p><b>Status mane:</b> <b>Verified live</b> = load kore check kora live site &nbsp;·&nbsp; <b>Live link</b> = client domain, alada load-check note nei &nbsp;·&nbsp; <b>Domain responds</b> = domain response kore kintu full site load hoy ni &nbsp;·&nbsp; <b>Staging / Dev / Temp</b> = softvence / wpengine / staging type link, live site na &nbsp;·&nbsp; <b>Live na (load fail)</b> = sheet-e link ache kintu load check-e site live pawa jay ni &nbsp;·&nbsp; <b>Context unclear</b> = site live, kintu oi group er project kina confirm na.</p>
+        <p>Shob 75 ta group-i panel-checked — Telegram group panel khule members ar link verify kora.</p>
+      </div>
+    </footer>
+
+    <script>
+      // Data baked in from the "Telegram Project Groups - A to Z" Google Sheet, snapshot 2026-11-05.
+      // platform: wp (shob project-i WordPress)   status: verified | live | responds | staging
+      var PROJECTS = [
+        { n: "bj_calderon", t: "bj_calderon || techforge1 || WordPress || FO729A866F1C5", u: [["peptides.us", "https://peptides.us/"]], a: "2026-11-05 08:45, Emon Hossain", d: "2026-11-05", p: "wp", s: "live" },
+        { n: "collab_cre8ive", t: "collab_cre8ive // skytwine // #Shopify", u: [["ukmerchandising.co.uk", "https://ukmerchandising.co.uk/"]], a: "2026-11-05 08:09, Farhad Hossain", d: "2026-11-05", p: "wp", s: "live" },
+        { n: "consimworld", t: "consimworld || explorweb_Fiverr || WP || FO522B69AAA05", u: [["consimgame1dev.wpenginepowered.com", "https://consimgame1dev.wpenginepowered.com/"]], a: "2026-11-04 08:16, Sanoara Popi", d: "2026-11-04", p: "wp", s: "staging" },
+        { n: "ekund1", t: "ekund1 / haidayammar", u: [["herhairbang.com", "https://herhairbang.com/"]], a: "2026-11-04 17:06, Webgenius", d: "2026-11-04", p: "wp", s: "live" },
+        { n: "gypseaco", t: "gypseaco || shopify_manir_Fiverr || $100", u: [["gypsea.co", "https://gypsea.co"]], a: "2026-11-05 08:21, Oliullah Al Ahad", d: "2026-11-05", p: "wp", s: "live" },
+        { n: "heatherzawahry", t: "heatherzawahry || tech_forge1 || WordPress || FO6A6E4CD2", u: [["amalpc.org", "https://amalpc.org"]], a: "2026-11-05 09:39, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "verified" },
+        { n: "helenafeofanov", t: "helenafeofanov || WP_Monkey || Shopify_Manir", u: [["hypnos.ee", "https://hypnos.ee"]], a: "2026-11-04 18:32, Shopify Manir", d: "2026-11-04", p: "wp", s: "live" },
+        { n: "jayhawk93", t: "jayhawk93 || shopify_manir || $100", u: [["jayhawk93.softvenceomega.com", "https://jayhawk93.softvenceomega.com/"]], a: "2026-11-04 17:35, Shopify Manir (only sent)", d: "2026-11-04", p: "wp", s: "staging" },
+        { n: "jdub888", t: "jdub888 || FO838424DEB08 || Manir_ Fiverr || Wordpress", u: [["yasuivapes.com", "https://yasuivapes.com/"]], a: "2026-11-05 08:46, Shopify Manir", d: "2026-11-05", p: "wp", s: "live" },
+        { n: "mattdivita", t: "mattdivita || Shopify_Manir || FO62F4E65EAC8 || WordPress", u: [["mattdlvita123.softvenceprime.com", "https://mattdlvita123.softvenceprime.com"]], a: "2026-11-05 08:46, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "staging" },
+        { n: "mikeprince83", t: "mikeprince83 || WP || Shopify_Manir", u: [["evergreeneliterentals.com", "https://evergreeneliterentals.com/"]], a: "2026-11-04 09:34, Shopify Manir", d: "2026-11-04", p: "wp", s: "live" },
+        { n: "pauldowling896", t: "pauldowling896 || tech_forge1 || WordPress || FO2DFC957742", u: [["premiumpeptides.asia", "https://premiumpeptides.asia"]], a: "2026-11-05 08:16, Shopify Manir", d: "2026-11-05", p: "wp", s: "live" },
+        { n: "paulkear01", t: "paulkear01 || tech_forge1 || WordPress || FO4E4DE8F9B3", u: [["vertexbio.co.uk", "https://vertexbio.co.uk"]], a: "2026-11-05 09:37, Shopify Manir", d: "2026-11-05", p: "wp", s: "verified" },
+        { n: "polenography", t: "polenography || FO8226BA01582 || shopify_manir_Fiverr || Wordpress", u: [["polenography.com/poleclasses", "https://polenography.com/poleclasses"]], a: "2026-11-05 09:34, Shakil Khan", d: "2026-11-05", p: "wp", s: "verified" },
+        { n: "primapeptider", t: "primapeptider — WP_Monkey — $50 || Shopify_Manir", u: [["1292930.eu9.myftpupload.com", "https://1292930.eu9.myftpupload.com/"]], a: "2026-11-04 15:59, Farhad Hossain", d: "2026-11-04", p: "wp", s: "staging" },
+        { n: "rosyhernandez4u", t: "rosyhernandez4u || tech_forge1 || FO429DC16E0C8 || Wordpress", u: [["vivewellnessla.com", "https://vivewellnessla.com"]], a: "2026-11-05 09:39, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "live" },
+        { n: "sergiogp4", t: "sergiogp4 — zyrocode — $300", u: [["staging2.nfnutrition.es", "https://staging2.nfnutrition.es/"]], a: "2026-11-04 17:18, Mercury Man (only sent)", d: "2026-11-04", p: "wp", s: "staging" },
+        { n: "shir_tan", t: "shir_tan || tech_forge1 || WordPress || FOE3A9F3D29", u: [["valoraictsolutions.com", "https://valoraictsolutions.com"]], a: "2026-11-05 09:38, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "verified" },
+        { n: "skylineinspired", t: "skylineinspired -- WP_Monkey_Fiverr — $650", u: [["skylineinspired.wpsilentpress.com", "https://skylineinspired.wpsilentpress.com/"]], a: "2026-11-04 12:18, Monkey Man (only sent)", d: "2026-11-04", p: "wp", s: "staging" },
+        { n: "tonypm1983", t: "tonypm1983 || tech_forge1 || WordPress || FOFFEE0B", u: [["spiffycleanco.com", "https://spiffycleanco.com"]], a: "2026-11-05 09:38, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "live" },
+        { n: "Webwise", t: "Webwise || Infini_tech", u: [["webwise.wpsvaomega.com", "https://webwise.wpsvaomega.com"]], a: "2026-11-04 16:23, Farhad Hossain", d: "2026-11-04", p: "wp", s: "staging" },
+        { n: "williamlowe751", t: "williamlowe751 — pixelcraft — $150 + $100", u: [["williamlowe751.wpsilentpress.com", "https://williamlowe751.wpsilentpress.com/"]], a: "2026-11-05 09:39, Aurora (only sent)", d: "2026-11-05", p: "wp", s: "staging" },
+        { n: "xraidersx", t: "xraidersx || tech_forge1 || WordPress || FO1AF0C", u: [["mrprobatesolutions.com", "https://mrprobatesolutions.com"]], a: "2026-08-28 project message; backup pinned 2026-11-05", d: "2026-08-28", p: "wp", s: "responds" },
+        { n: "Explorerjft", t: "Explorerjft || WP_Monkey || $150", u: [["geovortex.net", "https://geovortex.net"]], a: "2026-11-05 08:14, Monkey Man", d: "2026-11-05", p: "wp", s: "live" },
+        { n: "zac_leighton", t: "zac_leighton || tech_forge1 || WordPress || FO529E46874C7", u: [["elv8labs.com.au", "https://elv8labs.com.au"]], a: "2026-11-04 16:02, Sujon Banik", d: "2026-11-04", p: "wp", s: "live" },
+        { n: "zombiesmasher", t: "zombiesmasher || shopify_Manir || WordPress || FO1150B2F6D45", u: [["utmanimmigration.com", "https://utmanimmigration.com"]], a: "2026-11-03, Shopify Manir (only sent)", d: "2026-11-03", p: "wp", s: "live" },
+        { n: "n3tt33", t: "n3tt33 || Explorweb || #FO223313BD688 || Wordpress", u: [["starlightreikistudio.net", "https://starlightreikistudio.net"]], a: "2026-11-02, Sobuj Ali", d: "2026-11-02", p: "wp", s: "live" },
+        { n: "jimjim_86", t: "jimjim_86 || tech_forge1 || WordPress || FO522D0381105", u: [["pepvibesco.com", "https://pepvibesco.com/"]], a: "2026-11-01, Shopify Manir (only sent)", d: "2026-11-01", p: "wp", s: "verified" },
+        { n: "adam_bouzaid", t: "adam_bouzaid || twisbit || WordPress || FO61BE03C1D82", u: [["falconshocks.com.au", "https://falconshocks.com.au/"]], a: "2026-10-31, Abu Bakar", d: "2026-10-31", p: "wp", s: "live" },
+        { n: "jayzee855", t: "jayzee855 || FO31C20DE9385 || Shopify_Manir || WordPress", u: [["jayzee855.wpsvaomega.com", "https://jayzee855.wpsvaomega.com"]], a: "2026-10-28, Farhad Hossain", d: "2026-10-28", p: "wp", s: "staging" },
+        { n: "aaronsherril784", t: "aaronsherril784 || Shopify_Manir || FO527A342D1C7", u: [["movewellmobile.com", "https://movewellmobile.com/"]], a: "2026-10-25, Shopify Manir", d: "2026-10-25", p: "wp", s: "verified" },
+        { n: "lmnop8", t: "lmnop8 || Shopify_Manir || WordPress || FO214866CFBC4", u: [["blumeskintreatment.com", "https://blumeskintreatment.com/"], ["lumeraskinaz.com", "https://lumeraskinaz.com/"]], a: "2025-09-22, Shopify Manir (only sent)", d: "2025-09-22", p: "wp", s: "live" },
+        { n: "nithinchristy", t: "nithinchristy || tech_weave FO21A5D01DD86", u: [["thecrewlab.ae", "https://thecrewlab.ae/"]], a: "2025-09-10, Farhad Hossain", d: "2025-09-10", p: "wp", s: "live" },
+        { n: "adrian_nmg2002", t: "adrian_nmg2002 || manir || WORDPRESS", u: [["datarecoverydepartment.com", "https://datarecoverydepartment.com"]], a: "2025-09-25, Shopify Manir (only Sent)", d: "2025-09-25", p: "wp", s: "dead", note: "Load check: Error 525 — site live load hoy ni" },
+        { n: "skeyacht", t: "skeyacht (WP) || weaveflow || FO621A3781A84", u: [["skeyacht.com", "https://skeyacht.com/"]], a: "2025-06-15, Farhad Hossain", d: "2025-06-15", p: "wp", s: "live" },
+        { n: "abdelhadi_zabin", t: "abdelhadi_zabin || Shopify_Manir || FO1678AA328", u: [["raneenmep.com", "https://raneenmep.com"]], a: "2025-04-20, Shopify Manir (only sent)", d: "2025-04-20", p: "wp", s: "live" },
+        { n: "maxsaw35", t: "maxsaw35 || Shopify_Manir || FO621A8E69C84 || Wordpress", u: [["merlinfoghlu.com", "http://merlinfoghlu.com/"]], a: "2025-04-05, Shopify Manir (only sent)", d: "2025-04-05", p: "wp", s: "live" },
+        { n: "xiebig", t: "xiebig || Wordpress || Shopify manir || FO7218FBBF483", u: [["applytm.com", "https://www.applytm.com/"]], a: "2025-02-27, Shopify Manir (only sent)", d: "2025-02-27", p: "wp", s: "verified" },
+        { n: "glowaks", t: "glowaks || Shopify_Manir_Fiverr || FO72E21D2CCC7", u: [["pachocreate.com", "https://pachocreate.com/"]], a: "2025-02-26, Shopify Manir (only sent)", d: "2025-02-26", p: "wp", s: "verified" },
+        { n: "e_kadem", t: "e_kadem || Shopify_Manir_Fiverr || FO821364E1182", u: [["ekadem.softvenceomega.com", "https://ekadem.softvenceomega.com/"]], a: "2025-02-18, Farhad Hossain", d: "2025-02-18", p: "wp", s: "staging" },
+        { n: "ritanwa", t: "ritanwa || Shopify_Manir || FO35F2A1A1C1", u: [["ritachecksin.com", "https://ritachecksin.com"]], a: "2025-02-18, Sobuj Ali", d: "2025-02-18", p: "wp", s: "live" },
+        { n: "austinmowell10", t: "austinmowell10 || Shopify_Manir || WordPress || FO", u: [["aeriopartners.com", "https://aeriopartners.com/"]], a: "2025-02-18, Farhad Hossain", d: "2025-02-18", p: "wp", s: "unconfirmed", note: "aeriopartners.com live, kintu ei group-e pawa geleo context unclear — ei project er confirmed site na" },
+        { n: "legiondwise", t: "legiondwise || Shopify_Manir || FOA4A6C86F1C5 || WordPress", u: [["nighttidemultimedia.com", "https://nighttidemultimedia.com/"]], a: "2025-02-05, Shopify Manir (only sent)", d: "2025-02-05", p: "wp", s: "verified" },
+        { n: "graemesmithnas", t: "graemesmithnas || Shopify_Manir || FO41ADF7DAB", u: [["nascorporation.biz", "https://nascorporation.biz/"]], a: "2025-01-30, Vision Byte (only sent)", d: "2025-01-30", p: "wp", s: "live" },
+        { n: "matthewdarne864", t: "matthewdarne864 || Shopify_Manir || FO7BEA6BDA || WordPress", u: [["comtel.group", "https://comtel.group/"]], a: "2025-10-25, Farhad Hossain", d: "2025-10-25", p: "wp", s: "verified" },
+        { n: "hannah_walker42", t: "hannah_walker42 || Shopify_Manir || WordPress || FO", u: [["rescuehill.org", "https://rescuehill.org/"]], a: "2025-10-10, Farhad Hossain", d: "2025-10-10", p: "wp", s: "verified" },
+        { n: "siramar117", t: "siramar117 || Shopify_Manir || FO5E0DCAD7D || WordPress", u: [["simplygreenpest.com", "https://simplygreenpest.com/"]], a: "2025-09-18, Shopify Manir", d: "2025-09-18", p: "wp", s: "verified" },
+        { n: "romerojp", t: "romerojp || Shopify_Manir || FO9C46E", u: [["sycnmore.com", "https://sycnmore.com/"]], a: "2025-08-31, Shopify Manir", d: "2025-08-31", p: "wp", s: "verified" },
+        { n: "eugenio1974", t: "eugenio1974 || Shopify_Manir || WordPress || FO4C7E0A", u: [["sicilyinkayak.com/en", "https://www.sicilyinkayak.com/en/"]], a: "2025-08-25, AuraNest", d: "2025-08-25", p: "wp", s: "live" },
+        { n: "artrsmucenieks", t: "artrsmucenieks || Shopify_Manir || WordPress || FO", u: [["artrsmucenieks.softvenceomega.com", "https://artrsmucenieks.softvenceomega.com"]], a: "2025-07-29, Abdullah Bhai SVO (only sent)", d: "2025-07-29", p: "wp", s: "staging" },
+        { n: "veratornow587", t: "veratornow587 || Shopify_Manir || WordPress || FO", u: [["veratornow587.softvenceomega.com", "https://veratornow587.softvenceomega.com"]], a: "2025-07-27, Abdullah Bhai SVO", d: "2025-07-27", p: "wp", s: "staging" },
+        { n: "wesleysch_nl", t: "wesleysch_nl || Shopify_Manir || WordPress || FO6F7F3E63", u: [["wesleyschnl.softvenceomega.com", "https://wesleyschnl.softvenceomega.com/"]], a: "2025-07-26, Abdullah Bhai SVO (only sent)", d: "2025-07-26", p: "wp", s: "staging" },
+        { n: "grantmcmurtrie", t: "grantmcmurtrie || Shopify_Manir || WordPress || FO", u: [["professionalamateurclub.com", "https://professionalamateurclub.com"]], a: "2025-07-21, Farhad Hossain", d: "2025-07-21", p: "wp", s: "live" },
+        { n: "adam_luetto", t: "adam_luetto || Shopify_Manir || WordPress || FO5D36E9", u: [["adamluetto.softvenceomega.com", "https://adamluetto.softvenceomega.com"]], a: "2025-06-24, Farhad Hossain", d: "2025-06-24", p: "wp", s: "staging" },
+        { n: "elisha_k123", t: "elisha_k123 || Shopify_Manir || WordPress || FO", u: [["elisha.softvenceomega.com", "https://elisha.softvenceomega.com"]], a: "2025-06-19, Farhad Hossain", d: "2025-06-19", p: "wp", s: "staging" },
+        { n: "brooke_lea_smit", t: "brooke_lea_smit || tech_forge1 || WordPress || FO8AA0D", u: [["lucidvue.com", "https://lucidvue.com/"]], a: "2026-11-05 09:35, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "verified" },
+        { n: "jasonchicago", t: "jasonchicago || tech_forge1 || WordPress || FO28F1E9C2A", u: [["ionixpeptide.com", "https://ionixpeptide.com/"]], a: "2026-11-05 09:30, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "responds" },
+        { n: "tanyagw", t: "tanyagw || tech_forge1 || FO7DB9D7D9F", u: [["generationswellness.org", "https://generationswellness.org"]], a: "2026-11-05 09:27, Tofajjal Hossain", d: "2026-11-05", p: "wp", s: "live" },
+        { n: "murka23", t: "murka23 || Shopify_Manir || WordPress || FO", u: [["upandupremodeling.com", "https://upandupremodeling.com/"]], a: "2026-11-04 14:28, Ziaul Karim", d: "2026-11-04", p: "wp", s: "verified" },
+        { n: "marc1biz", t: "marc1biz || Shopify_Manir || WordPress || FO", u: [["cabinetexpo.com", "https://cabinetexpo.com/"]], a: "2026-11-04 15:35, Maruf Khan", d: "2026-11-04", p: "wp", s: "verified" },
+        { n: "tim_jr12", t: "tim_jr12 || Shopify_Manir || WordPress || FO", u: [["almapeptides.com", "https://almapeptides.com"]], a: "2026-11-04 10:10, Farhad Hossain", d: "2026-11-04", p: "wp", s: "live" },
+        { n: "dipz_330", t: "dipz_330 || Shopify_Manir || WordPress || FO", u: [["dipz330.softvenceprime.com", "https://dipz330.softvenceprime.com"]], a: "2026-11-04 12:57, Shohag Rana", d: "2026-11-04", p: "wp", s: "staging" },
+        { n: "aahud19", t: "aahud19 || Shopify_Manir || WordPress || FO", u: [["sdannex.org", "https://sdannex.org"]], a: "2026-11-04 15:20, Shohag Rana", d: "2026-11-04", p: "wp", s: "live" },
+        { n: "ebedj6922", t: "ebedj6922 || Shopify_Manir || WordPress || FO", u: [["pursuitofjoy.org", "https://pursuitofjoy.org/"]], a: "2026-11-04 15:03, Tofajjal Hossain", d: "2026-11-04", p: "wp", s: "verified" },
+        { n: "cgollins", t: "cgollins || Shopify_Manir || WordPress || FO", u: [["ptagrading.com", "https://ptagrading.com/"]], a: "2026-11-04 16:35, Tofajjal Hossain", d: "2026-11-04", p: "wp", s: "dead", note: "Load check: blank / lander page — live site na" },
+        { n: "tailiu604", t: "tailiu604 || Shopify_Manir || WordPress || FO", u: [["trdgarage.com", "https://trdgarage.com"]], a: "2026-07-31, Farhad Hossain", d: "2026-07-31", p: "wp", s: "live" },
+        { n: "marielalvara835", t: "marielalvara835 || Shopify_Manir || WordPress || FO", u: [["nibadesigns.com", "https://nibadesigns.com/"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "wp", s: "live" },
+        { n: "jordancbassett", t: "jordancbassett || Shopify_Manir || WordPress || FO", u: [["upliftpeptide.com", "https://upliftpeptide.com/"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "wp", s: "responds" },
+        { n: "omarc2657", t: "omarc2657 || Shopify_Manir || WordPress || FO", u: [["displaykingdom.com.au", "https://displaykingdom.com.au/"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "wp", s: "live" },
+        { n: "goldmount", t: "goldmount || Shopify_Manir || WordPress || FO", u: [["epilabpeptides.com", "https://epilabpeptides.com/"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "wp", s: "verified" },
+        { n: "ryanswimusa", t: "ryanswimusa || Shopify_Manir || WordPress || FO", u: [["hilligerinc.com", "https://hilligerinc.com"]], a: "2026-07-30, Farhad Hossain", d: "2026-07-30", p: "wp", s: "dead", note: "Load check: privacy / certificate error — live confirm hoy ni" },
+        { n: "redmanroo", t: "redmanroo || Shopify_Manir || WordPress || FO", u: [["aegispeptidex.com", "https://aegispeptidex.com"]], a: "2026-06-09, Sales (only sent)", d: "2026-06-09", p: "wp", s: "live" },
+        { n: "oh_hale", t: "oh_hale || Shopify_Manir || WordPress || FO", u: [["goldenpondretirement.com", "https://goldenpondretirement.com/"]], a: "2026-05-22, Emon Hossain", d: "2026-05-22", p: "wp", s: "verified" },
+        { n: "alexgverstacct", t: "alexgverstacct || Shopify_Manir || WordPress || FO", u: [["versatilegrowth.com.au", "https://versatilegrowth.com.au/"]], a: "2026-05-16, Farhad Hossain", d: "2026-05-16", p: "wp", s: "verified" },
+        { n: "beth_hinkson", t: "beth_hinkson || shopify_Manir || FO21522C272C4", u: [["beth.wpsvaomega.com", "https://beth.wpsvaomega.com/"]], a: "2026-11-05 08:34, Farhad Hossain", d: "2026-11-05", p: "wp", s: "staging" }
+      ];
+
+      var CATS = [
+        { id: "all", label: "Shob Project", desc: "" },
+        { id: "wp", label: "WordPress", desc: "Shob project-i WordPress-e kora. Kichu group title-e thaka \'Shopify_Manir\' holo handler er nam — platform na, tai kono alada Shopify category nei." }
+      ];
+      var STATUS = {
+        verified: { label: "Verified live", cls: "verified" },
+        live: { label: "Live link", cls: "live" },
+        responds: { label: "Domain responds", cls: "responds" },
+        staging: { label: "Staging / Dev", cls: "staging" },
+        dead: { label: "Live na (load fail)", cls: "dead" },
+        unconfirmed: { label: "Context unclear", cls: "unconfirmed" }
+      };
+
+      var state = { q: "", cat: "all", status: "all", year: "all", sort: "recent" };
+      var $ = function (id) { return document.getElementById(id); };
+
+      function esc(s) {
+        return String(s).replace(/[&<>"']/g, function (c) {
+          return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+        });
+      }
+      function initials(name) {
+        var clean = name.replace(/[^a-zA-Z0-9 ]/g, " ").trim();
+        var parts = clean.split(/\s+/);
+        if (parts.length > 1) return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
+        return clean.slice(0, 2).toUpperCase();
+      }
+      function catCount(id) {
+        if (id === "all") return PROJECTS.length;
+        return PROJECTS.filter(function (p) { return p.p === id; }).length;
+      }
+
+      function renderStats() {
+        var verified = PROJECTS.filter(function (p) { return p.s === "verified"; }).length;
+        var staging = PROJECTS.filter(function (p) { return p.s === "staging"; }).length;
+        var links = PROJECTS.reduce(function (n, p) { return n + p.u.length; }, 0);
+        $("stats").innerHTML =
+          '<div class="stat"><b>' + PROJECTS.length + '</b><span>Total project group</span></div>' +
+          '<div class="stat"><b>' + verified + '</b><span>Verified live website</span></div>' +
+          '<div class="stat"><b>' + links + '</b><span>Website link (total)</span></div>' +
+          '<div class="stat"><b>' + staging + '</b><span>Staging / dev / temp link</span></div>';
+      }
+
+      function renderChips() {
+        $("chips").innerHTML = CATS.map(function (c) {
+          return '<button class="chip' + (state.cat === c.id ? " active" : "") + '" data-cat="' + c.id + '" role="tab" aria-selected="' + (state.cat === c.id) + '">' +
+            esc(c.label) + ' <span class="n">' + catCount(c.id) + '</span></button>';
+        }).join("");
+        var btns = $("chips").querySelectorAll(".chip");
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].addEventListener("click", function () {
+            state.cat = this.getAttribute("data-cat");
+            render();
+          });
+        }
+      }
+
+      /* ---------- Smart client search ----------
+         Client er namer / domain er / niche er jekono ongsho mile gelei show korbe.
+         - case, underscore, hyphen, space — kichui matter kore na ("bj calderon", "bjcalderon", "bj_calderon" eksathe kaj kore)
+         - ekadhik word likhle shob word mile emon client-i asbe (order matter kore na)
+         - niche word diyeo khuje: peptide, skin, vape, wellness, pole, probate...
+         - halka vul spelling / majher ongsho bad porleo close match asbe (subsequence)
+      */
+      function norm(s) { return String(s || "").toLowerCase().trim(); }
+      function squash(s) { return norm(s).replace(/[^a-z0-9]+/g, ""); }
+      function spaced(s) { return norm(s).replace(/[^a-z0-9]+/g, " ").trim(); }
+      function isSubsequence(needle, hay) {
+        if (!needle) return true;
+        var i = 0;
+        for (var j = 0; j < hay.length && i < needle.length; j++) { if (hay.charAt(j) === needle.charAt(i)) i++; }
+        return i === needle.length;
+      }
+      function editDist(a, b) {
+        if (Math.abs(a.length - b.length) > 2) return 99;
+        var row = [], prev, tmp, i, j;
+        for (j = 0; j <= b.length; j++) row[j] = j;
+        for (i = 1; i <= a.length; i++) {
+          prev = row[0]; row[0] = i;
+          for (j = 1; j <= b.length; j++) {
+            tmp = row[j];
+            row[j] = Math.min(row[j] + 1, row[j - 1] + 1, prev + (a.charAt(i - 1) === b.charAt(j - 1) ? 0 : 1));
+            prev = tmp;
+          }
+        }
+        return row[b.length];
+      }
+      function getTags(p) {
+        var src = squash(p.n) + " " + p.u.map(function (x) { return x[0]; }).join(" ").toLowerCase() + " " + norm(p.t);
+        var tags = [];
+        function has() { for (var i = 0; i < arguments.length; i++) if (src.indexOf(arguments[i]) !== -1) return true; return false; }
+        if (has("peptide")) tags.push("Peptide");
+        if (has("skin", "blume", "lumera")) tags.push("Skincare");
+        if (has("vape")) tags.push("Vape");
+        if (has("pole", "polenography")) tags.push("Pole Fitness");
+        if (has("wellness", "vivewell", "generationswellness")) tags.push("Wellness");
+        if (has("probate")) tags.push("Probate / Legal");
+        if (has("yacht", "marine")) tags.push("Yacht / Marine");
+        if (has("pest")) tags.push("Pest Control");
+        if (has("hair")) tags.push("Hair & Beauty");
+        if (has("bio")) tags.push("Biotech");
+        if (has("ict", "valora")) tags.push("IT Solutions");
+        if (has("remodel", "cabinet")) tags.push("Home Remodeling");
+        if (has("retirement", "goldenpond")) tags.push("Retirement");
+        if (has("immigration", "utman")) tags.push("Immigration");
+        if (has("merchandising")) tags.push("Merchandising");
+        if (has("datarecovery")) tags.push("Data Recovery");
+        if (has("shocks", "falcon")) tags.push("Automotive");
+        if (has("pepvibes")) tags.push("Wellness Products");
+        if (!tags.length) {
+          var dom = p.u[0] ? p.u[0][0].replace(/^www\./, "").split("/")[0] : "";
+          var base = dom.split(".")[0];
+          if (base) tags.push(base);
+        }
+        return tags.slice(0, 3);
+      }
+      function haystack(p) {
+        return {
+          raw: norm(p.n + " " + p.t + " " + p.u.map(function (x) { return x[0] + " " + x[1]; }).join(" ") + " " + p.a + " " + getTags(p).join(" ")),
+          squashed: squash(p.n) + " " + squash(p.u.map(function (x) { return x[0]; }).join(" ")) + " " + squash(getTags(p).join(" ")),
+          nameSquashed: squash(p.n),
+          domainSquashed: squash(p.u.map(function (x) { return x[0]; }).join(" ")),
+          words: spaced(p.n + " " + p.u.map(function (x) { return x[0]; }).join(" ") + " " + getTags(p).join(" ")).split(/\s+/).filter(Boolean)
+        };
+      }
+      function tokenMatches(token, h) {
+        var t = norm(token), ts = squash(token);
+        if (!ts) return true;
+        if (h.raw.indexOf(t) !== -1) return true;
+        if (h.squashed.indexOf(ts) !== -1) return true;
+        if (ts.length >= 5 && isSubsequence(ts, h.nameSquashed)) return true;
+        if (ts.length >= 5) {
+          for (var i = 0; i < h.words.length; i++) {
+            if (Math.abs(h.words[i].length - ts.length) <= 2 && editDist(ts, squash(h.words[i])) <= 2) return true;
+          }
+        }
+        return false;
+      }
+      function scoreProject(p, query) {
+        if (!query) return 0;
+        var h = haystack(p), q = norm(query), qs = squash(query), tokens = q.split(/\s+/).filter(Boolean);
+        var score = 0;
+        if (h.nameSquashed === qs) score += 120;
+        else if (h.nameSquashed.indexOf(qs) === 0) score += 90;
+        else if (h.nameSquashed.indexOf(qs) !== -1) score += 70;
+        if (h.domainSquashed.indexOf(qs) !== -1) score += 45;
+        tokens.forEach(function (tok) {
+          var ts = squash(tok);
+          if (h.nameSquashed.indexOf(ts) !== -1) score += 25;
+          if (h.domainSquashed.indexOf(ts) !== -1) score += 12;
+          if (getTags(p).join(" ").toLowerCase().indexOf(norm(tok)) !== -1) score += 18;
+        });
+        return score;
+      }
+      function matches(p) {
+        if (state.cat !== "all" && p.p !== state.cat) return false;
+        if (state.status !== "all" && p.s !== state.status) return false;
+        if (state.year !== "all" && p.d.slice(0, 4) !== state.year) return false;
+        if (state.q) {
+          var h = haystack(p);
+          var tokens = norm(state.q).split(/\s+/).filter(Boolean);
+          for (var i = 0; i < tokens.length; i++) { if (!tokenMatches(tokens[i], h)) return false; }
+        }
+        return true;
+      }
+      function highlight(text, query) {
+        var out = esc(text);
+        if (!query) return out;
+        var tokens = norm(query).split(/\s+/).filter(Boolean).sort(function (a, b) { return b.length - a.length; });
+        tokens.forEach(function (tok) {
+          if (tok.length < 2) return;
+          var idx = out.toLowerCase().indexOf(tok.toLowerCase());
+          if (idx !== -1) out = out.slice(0, idx) + "<mark>" + out.slice(idx, idx + tok.length) + "</mark>" + out.slice(idx + tok.length);
+        });
+        return out;
+      }
+
+      function sortList(list) {
+        var arr = list.slice();
+        if (state.q) {
+          // Search thakle shobcheye valo mile jawa client age asbe
+          arr.sort(function (a, b) {
+            var d = scoreProject(b, state.q) - scoreProject(a, state.q);
+            if (d !== 0) return d;
+            return a.n.toLowerCase().localeCompare(b.n.toLowerCase());
+          });
+          return arr;
+        }
+        if (state.sort === "az") arr.sort(function (a, b) { return a.n.toLowerCase().localeCompare(b.n.toLowerCase()); });
+        else if (state.sort === "oldest") arr.sort(function (a, b) { return a.d < b.d ? -1 : a.d > b.d ? 1 : 0; });
+        else arr.sort(function (a, b) { return a.d > b.d ? -1 : a.d < b.d ? 1 : 0; });
+        return arr;
+      }
+
+      function cardHTML(p) {
+        var st = STATUS[p.s];
+        var links = p.u.map(function (x) {
+          return '<a class="site-link" href="' + esc(x[1]) + '" target="_blank" rel="noopener">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>' +
+            '<span>' + esc(x[0]) + '</span>' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></svg></a>';
+        }).join("");
+        var note = p.note ? '<div class="group-title">' + esc(p.note) + '</div>' : "";
+        var qTokens = norm(state.q).split(/\s+/).filter(Boolean);
+        var tagsHtml = '<div class="tags">' + getTags(p).map(function (tg) {
+          var isMatch = qTokens.some(function (tok) { return tg.toLowerCase().indexOf(tok) !== -1 || tok.indexOf(tg.toLowerCase()) !== -1; });
+          return '<span class="tag' + (isMatch ? " match" : "") + '">' + esc(tg) + '</span>';
+        }).join("") + '</div>';
+        return '<article class="card">' +
+          '<div class="card-top"><div style="display:flex;gap:11px;min-width:0"><div class="avatar">' + esc(initials(p.n)) + '</div>' +
+          '<div style="min-width:0"><h3>' + highlight(p.n, state.q) + '</h3><div class="group-title">' + esc(p.t) + '</div></div></div>' +
+          '<span class="pill ' + st.cls + '">' + st.label + '</span></div>' +
+          tagsHtml +
+          note +
+          '<div class="links">' + links + '</div>' +
+          '<div class="meta"><span>Latest activity: <b>' + esc(p.a) + '</b></span><span>Verification: <b>Panel-checked</b></span></div>' +
+          '</article>';
+      }
+
+      function render() {
+        renderChips();
+        var filtered = sortList(PROJECTS.filter(matches));
+        var html = "";
+        if (state.cat === "all") {
+          CATS.slice(1).forEach(function (c) {
+            var items = filtered.filter(function (p) { return p.p === c.id; });
+            if (!items.length) return;
+            html += '<section class="cat"><div class="cat-head"><h2>' + esc(c.label) + '</h2><span class="count">' + items.length + ' ta group</span><p>' + esc(c.desc) + '</p></div>' +
+              '<div class="grid">' + items.map(cardHTML).join("") + '</div></section>';
+          });
+        } else {
+          var c = CATS.filter(function (x) { return x.id === state.cat; })[0];
+          if (filtered.length) {
+            html = '<section class="cat"><div class="cat-head"><h2>' + esc(c.label) + '</h2><span class="count">' + filtered.length + ' ta group</span><p>' + esc(c.desc) + '</p></div>' +
+              '<div class="grid">' + filtered.map(cardHTML).join("") + '</div></section>';
+          }
+        }
+        $("main").innerHTML = html;
+        $("empty").style.display = filtered.length ? "none" : "block";
+        if (!filtered.length && state.q) {
+          $("empty").querySelector("h3").textContent = '"' + state.q + '" diye kono client mile ni';
+          $("empty").querySelector("p").textContent = "Namer aro chhoto ongsho likhe try koro — jemon prothom 3-4 okkhor, ba niche / domain er ekta word. Athoba Reset diye shob group dekhao.";
+        } else if (!filtered.length) {
+          $("empty").querySelector("h3").textContent = "Kono project mile ni";
+          $("empty").querySelector("p").textContent = "Search ba filter change kore abar try koro — athoba Reset diye shob group abar dekhao.";
+        }
+        $("resultCount").textContent = state.q
+          ? '"' + state.q + '" diye mile jawa ' + filtered.length + " ta project dekhachhe — shobcheye valo match age"
+          : filtered.length + " ta project dekhachhe — total " + PROJECTS.length + " ta group er moddhe";
+        var dirty = state.q || state.cat !== "all" || state.status !== "all" || state.year !== "all";
+        $("resetBtn").style.display = dirty ? "inline" : "none";
+        $("qClear").style.display = state.q ? "block" : "none";
+      }
+
+      function resetAll() {
+        state = { q: "", cat: "all", status: "all", year: "all", sort: state.sort };
+        $("q").value = ""; $("fStatus").value = "all"; $("fYear").value = "all";
+        if (typeof closeSuggest === "function") closeSuggest();
+        render();
+      }
+
+      /* ---------- Live suggestions: likhte likhte mile jawa client ---------- */
+      var suggestIndex = -1;
+      function closeSuggest() {
+        $("suggestBox").classList.remove("open");
+        $("suggestBox").innerHTML = "";
+        $("q").setAttribute("aria-expanded", "false");
+        suggestIndex = -1;
+      }
+      function renderSuggest() {
+        var q = norm(state.q);
+        if (!q) { closeSuggest(); return; }
+        // Status / year / category filter bad diye shudhu search diye match khoja hoy, jate suggestion miss na hoy
+        var saved = { cat: state.cat, status: state.status, year: state.year };
+        state.cat = "all"; state.status = "all"; state.year = "all";
+        var found = PROJECTS.filter(matches);
+        state.cat = saved.cat; state.status = saved.status; state.year = saved.year;
+        found = found.map(function (p) { return { p: p, s: scoreProject(p, state.q) }; })
+          .sort(function (a, b) { return b.s - a.s || a.p.n.toLowerCase().localeCompare(b.p.n.toLowerCase()); })
+          .slice(0, 8);
+        if (!found.length) { closeSuggest(); return; }
+        suggestIndex = -1;
+        $("suggestBox").innerHTML = '<div class="suggest-head">' + found.length + ' ta matching client — click korlei show korbe</div>' + found.map(function (f, i) {
+          var tags = getTags(f.p);
+          return '<button type="button" class="suggest-item" role="option" data-name="' + esc(f.p.n) + '" data-idx="' + i + '">' +
+            '<span><span class="s-name">' + highlight(f.p.n, state.q) + '</span><br><span class="s-domain">' + esc(f.p.u.map(function (x) { return x[0]; }).join(" · ")) + '</span></span>' +
+            (tags.length ? '<span class="s-tag">' + esc(tags[0]) + '</span>' : '') + '</button>';
+        }).join("");
+        $("suggestBox").classList.add("open");
+        $("q").setAttribute("aria-expanded", "true");
+        var items = $("suggestBox").querySelectorAll(".suggest-item");
+        for (var i = 0; i < items.length; i++) {
+          items[i].addEventListener("mousedown", function (e) {
+            e.preventDefault();
+            pickSuggest(this.getAttribute("data-name"));
+          });
+        }
+      }
+      function pickSuggest(name) {
+        state.q = name; $("q").value = name;
+        closeSuggest(); render(); $("q").focus();
+      }
+      function moveSuggest(dir) {
+        var items = $("suggestBox").querySelectorAll(".suggest-item");
+        if (!items.length) return;
+        suggestIndex = Math.max(-1, Math.min(items.length - 1, suggestIndex + dir));
+        for (var i = 0; i < items.length; i++) items[i].classList.toggle("active", i === suggestIndex);
+        if (suggestIndex >= 0) items[suggestIndex].scrollIntoView({ block: "nearest" });
+      }
+
+      $("q").addEventListener("input", function () { state.q = this.value.trim(); render(); renderSuggest(); });
+      $("q").addEventListener("focus", function () { if (state.q) renderSuggest(); });
+      $("q").addEventListener("blur", function () { setTimeout(closeSuggest, 150); });
+      $("q").addEventListener("keydown", function (e) {
+        if (e.key === "ArrowDown") { e.preventDefault(); moveSuggest(1); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); moveSuggest(-1); }
+        else if (e.key === "Enter") {
+          var items = $("suggestBox").querySelectorAll(".suggest-item");
+          if (suggestIndex >= 0 && items[suggestIndex]) { e.preventDefault(); pickSuggest(items[suggestIndex].getAttribute("data-name")); }
+          else closeSuggest();
+        } else if (e.key === "Escape") { closeSuggest(); }
+      });
+      document.addEventListener("click", function (e) {
+        if (!$("suggestBox").contains(e.target) && e.target !== $("q")) closeSuggest();
+      });
+      $("qClear").addEventListener("click", function () { state.q = ""; $("q").value = ""; closeSuggest(); render(); $("q").focus(); });
+      $("fStatus").addEventListener("change", function () { state.status = this.value; render(); });
+      $("fYear").addEventListener("change", function () { state.year = this.value; render(); });
+      $("fSort").addEventListener("change", function () { state.sort = this.value; render(); });
+      $("resetBtn").addEventListener("click", resetAll);
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "/" && document.activeElement !== $("q") && !/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) {
+          e.preventDefault(); $("q").focus();
+        }
+      });
+
+      renderStats();
+      render();
+    </script>
+  </body>
+</html>
